@@ -1,4 +1,5 @@
-"use client";
+"use client"; // -> for useForm
+
 
 import {productSchema} from "@/lib/validators";
 import React, {useState} from "react";

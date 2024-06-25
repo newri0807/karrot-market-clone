@@ -1,4 +1,4 @@
-"use client";
+"use client"; // -> for useForm
 
 import React from "react";
 import {useForm} from "react-hook-form";

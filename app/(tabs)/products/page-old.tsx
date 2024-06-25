@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, {useState, useEffect} from "react";
 import {formatToTimeAgo, formatToWon} from "@/lib/utils";
-import {getProducts} from "./action";
+import {getProducts} from "./action-old";
 import {Product} from "@/lib/type";
 
 // 초기 로드 시 가져올 제품 수
@@ -70,7 +70,7 @@ function ProductPage() {
     return (
         <>
             {products.map((product) => (
-                <Link key={product.id} href={`/products/${product.id}`} className="flex gap-5 my-3 hover:opacity-80">
+                <Link key={product.id} href={`/products/view/${product.id}`} className="flex gap-5 my-3 hover:opacity-80">
                     <div className="relative size-28 rounded-md overflow-hidden border-neutral-600 border">
                         <Image fill src={product.photo} alt={product.title} className="object-cover" />
                     </div>

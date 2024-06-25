@@ -7,6 +7,7 @@ import fs from "fs";
 import {redirect} from "next/navigation";
 import path from "path";
 import sharp from "sharp";
+import { revalidateProductList } from '../../home/action';
 
 // Add product action
 export async function addProductAction(data: any) {
@@ -64,7 +65,9 @@ export async function addProductAction(data: any) {
         });
         console.log("product----", product);
 
-        redirect(`/products/${product.id}`);
+        await revalidateProductList(); // 캐시 무효화
+
+        redirect(`/products/view/${product.id}`);
     } else {
         throw new Error("User session not found.");
     }

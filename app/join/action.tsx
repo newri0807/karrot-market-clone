@@ -42,5 +42,5 @@ export async function signupAction(data: any) {
     session.id = user.id;
     await session.save();
 
-    return redirect("/products"); // 가입 후 리디렉션
+    return redirect("/myPage"); // 가입 후 리디렉션
 }

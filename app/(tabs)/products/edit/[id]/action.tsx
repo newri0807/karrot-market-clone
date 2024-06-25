@@ -1,5 +1,6 @@
 "use server";
 
+import {revalidateProductList} from "@/app/(tabs)/home/action";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
 import {ProductWithUser} from "@/lib/type";
@@ -71,6 +72,8 @@ export async function updateProductAction(data: any): Promise<{product?: Product
             },
         });
 
+        await revalidateProductList(); // 캐시 무효화
+
         redirect(`/products/${updatedProduct.id}`);
     } else {
         throw new Error("User session not found.");
@@ -92,7 +95,8 @@ export async function deleteProductAction(productId: number) {
             where: {id: productId},
         });
 
-        redirect("/products");
+        await revalidateProductList(); // 캐시 무효화
+        redirect("/home");
     } else {
         throw new Error("User session not found.");
     }

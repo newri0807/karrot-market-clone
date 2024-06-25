@@ -1,4 +1,4 @@
-"use client";
+"use client"; // -> for useForm
 
 import {productSchema} from "@/lib/validators";
 import React, {useState, useEffect} from "react";
@@ -8,7 +8,7 @@ import {z} from "zod";
 import CustomButton from "@/components/ui/csbutton";
 import {useRouter} from "next/navigation";
 import {ProductWithUser} from "@/lib/type";
-import {getProductById} from "../../[id]/action";
+import {getProductById} from "../../view/[id]/action";
 import {deleteProductAction, updateProductAction} from "./action";
 import CustomInput from "@/components/ui/csinput";
 

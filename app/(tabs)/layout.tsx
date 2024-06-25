@@ -11,7 +11,7 @@ export default function TabLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="relative">
+        <div>
             {children}
             <TabMenu />
         </div>

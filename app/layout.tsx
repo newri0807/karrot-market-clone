@@ -18,7 +18,7 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <body suppressHydrationWarning={true}>
                 <main className="flex min-h-screen flex-col justify-center items-center bg-black text-white">
-                    <div className="w-[360px] text-center flex flex-col justify-between h-[95vh] relative">{children}</div>
+                    <div className="w-[360px] text-center flex flex-col justify-between h-screen py-5 relative">{children}</div>
                 </main>
             </body>
         </html>

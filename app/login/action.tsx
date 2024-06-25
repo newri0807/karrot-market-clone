@@ -38,5 +38,5 @@ export async function loginAction(data: any) {
     session.id = user.id;
     await session.save();
 
-    return redirect("/products"); // 로그인 후 리디렉션
+    return redirect("/home"); // 로그인 후 리디렉션
 }
