@@ -21,3 +21,18 @@ export async function getProductById(id: number): Promise<ProductWithUser | null
         updated_at: product.updated_at.toISOString(),
     } as ProductWithUser;
 }
+
+export async function getProductTitleById(id: number): Promise<string | null> {
+    const product = await db.product.findUnique({
+        where: {id},
+        select: {
+            title: true,
+        },
+    });
+
+    if (!product) {
+        return null;
+    }
+
+    return product.title;
+}

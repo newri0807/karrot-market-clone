@@ -6,7 +6,7 @@ import {z} from "zod";
 import CustomInput from "@/components/ui/csinput";
 import CustomButton from "@/components/ui/csbutton";
 import {useForm} from "react-hook-form";
-import {loginAction} from "./action";
+import {loginAction} from "./actions";
 import {loginSchema} from "@/lib/validators";
 import {error} from "console";
 

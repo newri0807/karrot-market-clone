@@ -7,7 +7,7 @@ import {signupSchema} from "@/lib/validators";
 import CustomInput from "@/components/ui/csinput";
 import CustomButton from "@/components/ui/csbutton";
 import {z} from "zod";
-import {signupAction} from "./action";
+import {signupAction} from "./actions";
 
 type FormData = z.infer<typeof signupSchema>;
 

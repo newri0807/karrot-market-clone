@@ -4,9 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React, {useState, useEffect} from "react";
 import {formatToTimeAgo, formatToWon} from "@/lib/utils";
-
 import {Product} from "@/lib/type";
-import {getCachedProducts} from "@/app/(tabs)/home/action";
+import {getCachedProducts} from "@/app/(tabs)/home/actions";
 
 // 초기 로드 시 가져올 제품 수
 const INITIAL_LOAD = 1;

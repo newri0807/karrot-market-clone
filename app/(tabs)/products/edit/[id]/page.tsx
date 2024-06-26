@@ -8,8 +8,8 @@ import {z} from "zod";
 import CustomButton from "@/components/ui/csbutton";
 import {useRouter} from "next/navigation";
 import {ProductWithUser} from "@/lib/type";
-import {getProductById} from "../../view/[id]/action";
-import {deleteProductAction, updateProductAction} from "./action";
+import {getProductById} from "../../view/[id]/actions";
+import {deleteProductAction, updateProductAction} from "./actions";
 import CustomInput from "@/components/ui/csinput";
 
 type FormData = z.infer<typeof productSchema>;

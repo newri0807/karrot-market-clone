@@ -7,7 +7,7 @@ import fs from "fs";
 import {redirect} from "next/navigation";
 import path from "path";
 import sharp from "sharp";
-import { revalidateProductList } from '../../home/action';
+import { revalidateProductList } from '../../home/actions';
 
 // Add product action
 export async function addProductAction(data: any) {

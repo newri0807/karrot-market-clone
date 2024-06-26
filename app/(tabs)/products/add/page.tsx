@@ -1,12 +1,11 @@
 "use client"; // -> for useForm
 
-
 import {productSchema} from "@/lib/validators";
 import React, {useState} from "react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Controller, useForm} from "react-hook-form";
 import {z} from "zod";
-import {addProductAction} from "./action";
+import {addProductAction} from "./actions";
 import CustomInput from "@/components/ui/csinput";
 import CustomButton from "@/components/ui/csbutton";
 import {useRouter} from "next/navigation";

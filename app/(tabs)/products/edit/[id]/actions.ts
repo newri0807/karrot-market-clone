@@ -1,6 +1,6 @@
 "use server";
 
-import {revalidateProductList} from "@/app/(tabs)/home/action";
+import {revalidateProductList} from "@/app/(tabs)/home/actions";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
 import {ProductWithUser} from "@/lib/type";

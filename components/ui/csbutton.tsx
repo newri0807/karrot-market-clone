@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { ReactNode } from "react";
 import {useRouter} from "next/navigation";
 import {Button} from "./Button";
 
 interface ButtonProps {
-    text: string;
+    text: ReactNode;
     className?: string;
     path?: string;
     onClick?: () => void;

@@ -1,6 +1,6 @@
-import {getProductById} from "@/app/(tabs)/products/view/[id]/action";
+import {getProductById} from "@/app/(tabs)/products/view/[id]/actions";
 import CloseButton from "@/components/close-button";
-import {PhotoIcon, XMarkIcon} from "@heroicons/react/16/solid";
+import {PhotoIcon} from "@heroicons/react/16/solid";
 import Image from "next/image";
 import {notFound} from "next/navigation";
 
