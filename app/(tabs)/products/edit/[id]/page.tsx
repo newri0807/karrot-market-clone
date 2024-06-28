@@ -111,7 +111,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
     }
 
     return (
-        <>
+        <div className="*:justify-center">
             <div className="my-2">
                 <h1 className="text-xl font-bold">상품 수정</h1>
                 <p className="text-sm">아래 폼을 작성하여 상품을 수정하세요!</p>
@@ -174,7 +174,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
                 <CustomButton text="update product" />
             </form>
             <CustomButton text="delete product" className="bg-red-700 mt-3 hover:bg-red-800" onClick={handleDelete} />
-        </>
+        </div>
     );
 };
 

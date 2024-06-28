@@ -14,19 +14,21 @@ datasource db {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  username   String    @unique
-  email      String?   @unique
+  id         Int        @id @default(autoincrement())
+  username   String     @unique
+  email      String?    @unique
   password   String? // String? : 필수값 아님 
-  phone      String?   @unique
-  github_id  String?   @unique
+  phone      String?    @unique
+  github_id  String?    @unique
   avatar     String?
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
   Product    Product[]
   posts      Post[]
   comments   Comment[]
   likes      Like[]
+  chat_rooms ChatRoom[]
+  messages   Message[]
 }
 
 model Product {
@@ -78,4 +80,24 @@ model Like {
   postId Int
 
   @@id(name: "id", [userId, postId]) // => 1 유저가 1개의 포스트에만 좋아요 가능
+}
+
+model ChatRoom {
+  id         String    @id @default(cuid())
+  users      User[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  messages   Message[]
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  payload    String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  room       ChatRoom @relation(fields: [chatRoomId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  chatRoomId String
+  userId     Int
+  read       Boolean  @default(false)
 }

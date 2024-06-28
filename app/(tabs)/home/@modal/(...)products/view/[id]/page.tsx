@@ -9,8 +9,11 @@ export default async function Modal({params}: {params: {id: string}}) {
     if (isNaN(id)) return notFound();
 
     const product = await getProductById(id);
+
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    await delay(3000);
     return (
-        <div className="absolute w-full h-full z-50 flex items-center justify-center bg-black bg-opacity-60 left-0 top-0">
+        <div className="absolute w-full h-full z-50 flex items-center justify-center bg-[#161616] bg-opacity-60 left-0 top-0">
             <CloseButton />
             <div className="h-1/2 flex justify-center">
                 <>

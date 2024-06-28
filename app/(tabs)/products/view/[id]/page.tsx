@@ -46,8 +46,24 @@ async function ProductDetailPage({params}: ProductDetailPageProps) {
             )}
             <span className="text-lg">{productData.title}</span>
             <span className="text-sm text-neutral-500">{formatToTimeAgo(productData.created_at.toString())}</span>
-            <span className="text-lg font-semibold">{formatToWon(productData.price)}</span>
-            {sessionData && productData.userId === sessionData.id && <CustomButton text="edit" path={`/products/edit/${params.id}`} />}
+
+            <div className="w-[360px] fixed bottom-0 z-30 bg-[#232323]">
+                <ul className="flex justify-between  items-center h-10 m-3 text-white">
+                    <li>
+                        <span className="text-white">{formatToWon(productData.price)}원</span>
+                    </li>
+                    <div className="flex gap-2">
+                        {sessionData && productData.userId === sessionData.id && (
+                            <li>
+                                <CustomButton text="edit" path={`/products/edit/${params.id}`} className="bg-neutral-600 hover:bg-neutral-700" />
+                            </li>
+                        )}
+                        <li>
+                            <CustomButton text="채팅하기" />
+                        </li>
+                    </div>
+                </ul>
+            </div>
         </div>
     );
 }

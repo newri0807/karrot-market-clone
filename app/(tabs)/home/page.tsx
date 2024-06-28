@@ -16,7 +16,7 @@ function ProductPage() {
             <ProductList />
             <Link href="/products/add">
                 <CustomButton
-                    className="h-10 w-10 p-2 bg-[#ee761a] rounded-full absolute z-10 top-[90vh] right-2 hover:opacity-90"
+                    className="h-10 w-10 p-2 bg-[#ee761a] rounded-full absolute z-10 bottom-20 right-2 hover:opacity-90"
                     text={<PlusIcon />}
                 />
             </Link>

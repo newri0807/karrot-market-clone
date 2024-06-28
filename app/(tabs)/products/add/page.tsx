@@ -62,7 +62,7 @@ const AddProductpage = () => {
     };
 
     return (
-        <>
+        <div className="*:justify-center">
             <div className="my-2">
                 <h1 className="text-xl font-bold">상품 등록</h1>
                 <p className="text-sm">아래 폼을 작성하여 상품을 등록하세요!</p>
@@ -121,7 +121,7 @@ const AddProductpage = () => {
                 <CustomInput type="number" name="price" placeholder="가격" register={register} error={errors.price?.message} />
                 <CustomButton text="add account" />
             </form>
-        </>
+        </div>
     );
 };
 

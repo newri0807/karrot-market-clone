@@ -18,12 +18,16 @@ import {
     VideoCameraIcon as OutlineVideoCameraIcon,
     UserIcon as OutlineUserIcon,
 } from "@heroicons/react/24/outline";
-
 const TabMenu = () => {
     const currentPage = usePathname();
+    const isProductsViewPath = currentPage.includes("/products/view/");
+    const isChatViewPath = currentPage.includes("/chat/view/");
 
+    if (isProductsViewPath || isChatViewPath) {
+        return null;
+    }
     return (
-        <div className="w-[360px] fixed bottom-0 z-30 bg-neutral-800 border-neutral-600 border-t">
+        <div className="w-[360px] fixed bottom-0 z-30 bg-[#232323] ">
             <ul className="grid grid-cols-5 items-center h-10 my-3 mx-1 *:text-white">
                 <li className="flex flex-col items-center">
                     <Link href="/home">
