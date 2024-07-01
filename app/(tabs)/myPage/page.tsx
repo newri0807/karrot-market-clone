@@ -29,11 +29,11 @@ export default async function MyPage() {
         "use server";
         const session = await getSession();
         await session.destroy();
-        
+
         redirect("/");
     };
     return (
-        <div>
+        <div className="p-5 flex flex-col">
             <Suspense fallback={"Welcome!"}>
                 <Username />
             </Suspense>

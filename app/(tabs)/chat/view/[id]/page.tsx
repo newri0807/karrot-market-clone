@@ -5,6 +5,7 @@ import Image from "next/image";
 import {formatToTimeAgo} from "@/lib/utils";
 import {ArrowUpCircleIcon} from "@heroicons/react/24/solid";
 import {fetchMessages, getUserFromSession, saveMessage} from "./actions";
+import {UserCircleIcon} from "@heroicons/react/24/outline";
 
 const SUPABASE_PUBLIC_KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLIC_KEY!;
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -116,15 +117,19 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
         <div className="p-5 flex flex-col gap-5 min-h-screen justify-end">
             {messages.map((message) => (
                 <div key={message.id} className={`flex gap-2 items-start ${message.userId === user?.id ? "justify-end" : "justify-start"}`}>
-                    {message.userId !== user?.id && (
-                        <Image
-                            src={message.user.avatar || "/default-avatar.png"}
-                            alt={message.user.username}
-                            width={50}
-                            height={50}
-                            className="size-8 rounded-full"
-                        />
-                    )}
+                    {message.userId !== user?.id &&
+                        (message?.user?.avatar ? (
+                            <Image
+                                src={message.user.avatar || "/default-avatar.png"}
+                                alt={message.user.username}
+                                width={50}
+                                height={50}
+                                className="size-8 rounded-full"
+                            />
+                        ) : (
+                            <UserCircleIcon className="size-8" />
+                        ))}
+
                     <div className={`flex flex-col gap-1 ${message.userId === user?.id ? "items-end text-right" : "items-start text-left"}`}>
                         <span className={`${message.userId === user?.id ? "bg-neutral-500" : "bg-orange-500"} p-2.5 rounded-md`}>
                             {message.payload}
