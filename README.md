@@ -44,7 +44,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 │  │  └─ page.tsx
 │  ├─ (tabs)
 │  │  ├─ chat
-│  │  │  └─ page.tsx
+│  │  │  ├─ actions.ts
+│  │  │  ├─ page.tsx
+│  │  │  └─ view
+│  │  │     └─ [...id]
+│  │  │        ├─ actions.ts
+│  │  │        └─ page.tsx
 │  │  ├─ home
 │  │  │  ├─ @modal
 │  │  │  │  ├─ (...)products
@@ -53,52 +58,72 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 │  │  │  │  │        └─ page.tsx
 │  │  │  │  ├─ default.tsx
 │  │  │  │  └─ loading.tsx
-│  │  │  ├─ action.tsx
+│  │  │  ├─ actions.ts
 │  │  │  ├─ layout.tsx
 │  │  │  ├─ loading.tsx
 │  │  │  └─ page.tsx
 │  │  ├─ layout.tsx
 │  │  ├─ living
-│  │  │  └─ page.tsx
+│  │  │  ├─ actions.ts
+│  │  │  ├─ comment
+│  │  │  │  └─ actions.ts
+│  │  │  ├─ loading.tsx
+│  │  │  ├─ page.tsx
+│  │  │  └─ view
+│  │  │     └─ [id]
+│  │  │        ├─ actions.ts
+│  │  │        └─ page.tsx
 │  │  ├─ myPage
+│  │  │  ├─ actions.ts
+│  │  │  ├─ edit
+│  │  │  │  ├─ action.ts
+│  │  │  │  └─ page.tsx
 │  │  │  └─ page.tsx
 │  │  ├─ products
-│  │  │  ├─ action-old.tsx
 │  │  │  ├─ add
-│  │  │  │  ├─ action.tsx
+│  │  │  │  ├─ actions.ts
 │  │  │  │  └─ page.tsx
 │  │  │  ├─ edit
 │  │  │  │  └─ [id]
-│  │  │  │     ├─ action.tsx
+│  │  │  │     ├─ actions.ts
 │  │  │  │     └─ page.tsx
-│  │  │  ├─ loading-old.tsx
-│  │  │  ├─ page-old.tsx
 │  │  │  └─ view
 │  │  │     └─ [id]
-│  │  │        ├─ action.tsx
+│  │  │        ├─ actions.ts
 │  │  │        ├─ loading.tsx
 │  │  │        └─ page.tsx
 │  │  └─ shop
 │  │     └─ page.tsx
 │  ├─ globals.css
 │  ├─ join
-│  │  ├─ action.tsx
+│  │  ├─ actions.ts
 │  │  ├─ layout.tsx
 │  │  └─ page.tsx
 │  ├─ layout.tsx
 │  ├─ login
-│  │  ├─ action.tsx
+│  │  ├─ actions.ts
 │  │  ├─ layout.tsx
 │  │  └─ page.tsx
-│  └─ not-found.tsx
+│  ├─ not-found.tsx
+│  └─ review
+│     └─ [...id]
+│        ├─ actions.ts
+│        └─ page.tsx
 ├─ components
+│  ├─ chat-list.tsx
+│  ├─ chatOpen-Button.tsx
 │  ├─ close-button.tsx
+│  ├─ comment-list.tsx
+│  ├─ like-button.tsx
+│  ├─ myPage
+│  │  └─ productList.tsx
 │  ├─ product-list.tsx
 │  └─ ui
 │     ├─ Button.tsx
 │     ├─ csbutton.tsx
 │     ├─ csinput.tsx
 │     ├─ Input.tsx
+│     ├─ Rating.tsx
 │     └─ tabMenu.tsx
 ├─ components.json
 ├─ lib
@@ -121,17 +146,30 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 │  │  │  └─ migration.sql
 │  │  ├─ 20240623084638_add_model_product
 │  │  │  └─ migration.sql
+│  │  ├─ 20240626045838_add_model_post_comment_like
+│  │  │  └─ migration.sql
+│  │  ├─ 20240627234242_add_realtime_chat
+│  │  │  └─ migration.sql
+│  │  ├─ 20240628012024_add_read_in_model_message
+│  │  │  └─ migration.sql
+│  │  ├─ 20240701021413_add_review
+│  │  │  └─ migration.sql
+│  │  ├─ 20240701023941_eidt_extras
+│  │  │  └─ migration.sql
+│  │  ├─ 20240702015911_
+│  │  │  └─ migration.sql
+│  │  ├─ 20240702020152_reset
+│  │  │  └─ migration.sql
+│  │  ├─ 20240702020245_add_product_id_in_chat_room
+│  │  │  └─ migration.sql
 │  │  └─ migration_lock.toml
 │  └─ schema.prisma
 ├─ public
-│  ├─ c-d-x-PDX_a_82obo-unsplash.jpg
-│  ├─ domino-studio-164_6wVEHfI-unsplash.jpg
-│  ├─ eniko-kis-KsLPTsYaqIQ-unsplash.jpg
-│  ├─ Image_test.png
 │  ├─ next.svg
-│  ├─ rachit-tank-2cFZ_FB08UM-unsplash.jpg
 │  └─ vercel.svg
 ├─ README.md
+├─ store
+│  └─ userStore.ts
 ├─ tailwind.config.ts
 └─ tsconfig.json
 

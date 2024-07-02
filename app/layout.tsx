@@ -22,7 +22,7 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning className={`${engFont.className} ${korFont.className}`}>
             <body suppressHydrationWarning={true}>
                 <main className="flex min-h-screen flex-col justify-center items-center bg-[#161616] text-white">
-                    <div className="w-[360px] text-center flex flex-col justify-between h-screen relative">{children}</div>
+                    <div className="w-[360px] text-center flex flex-col justify-between h-screen relative overflow-y-auto">{children}</div>
                 </main>
             </body>
         </html>
