@@ -6,6 +6,7 @@ import CustomButton from "@/components/ui/csbutton";
 import {formatToTimeAgo, formatToWon} from "@/lib/utils";
 import {Metadata} from "next";
 import {UserCircleIcon} from "@heroicons/react/24/outline";
+import ChatButton from "@/components/chatOpen-Button";
 
 type ProductDetailPageProps = {
     params: {id: string};
@@ -53,14 +54,17 @@ async function ProductDetailPage({params}: ProductDetailPageProps) {
                         <span className="text-white">{formatToWon(productData.price)}원</span>
                     </li>
                     <div className="flex gap-2">
-                        {sessionData && productData.userId === sessionData.id && (
+                        {sessionData && productData.userId === sessionData.id ? (
                             <li>
                                 <CustomButton text="edit" path={`/products/edit/${params.id}`} className="bg-neutral-600 hover:bg-neutral-700" />
                             </li>
+                        ):(
+                             <li>
+                                {/* 여기서 otherUserId는 상대방의 ID로 변경 */}
+                                <ChatButton text="채팅하기" otherUserId={productData.userId} produdctId={productData.id}/> 
+                            </li>
                         )}
-                        <li>
-                            <CustomButton text="채팅하기" />
-                        </li>
+                       
                     </div>
                 </ul>
             </div>

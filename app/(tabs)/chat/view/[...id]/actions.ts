@@ -131,3 +131,96 @@ export async function saveMessage(chatRoomId: string, message: string, userId: n
         read: newMessage.read,
     };
 }
+
+/**
+ * 사용자의 기존 채팅방을 찾거나, 새로운 채팅방을 생성합니다.
+ *
+ * @param {number} userId - 사용자 ID
+ * @param {number} otherUserId - 상대방 사용자 ID
+ * @returns {Promise<Object>} 채팅방 객체를 반환합니다.
+ */
+export async function findOrCreateChatRoom(userId: number, otherUserId: number, productId: number) {
+    let chatRoom = await db.chatRoom.findFirst({
+        where: {
+            AND: [{users: {some: {id: userId}}}, {users: {some: {id: otherUserId}}}, {productId: productId}],
+        },
+    });
+
+    if (!chatRoom) {
+        chatRoom = await db.chatRoom.create({
+            data: {
+                users: {
+                    connect: [{id: userId}, {id: otherUserId}],
+                },
+                productId: productId,
+            },
+        });
+    }
+
+    return chatRoom;
+}
+
+/**
+ * 특정 제품의 정보를 가져옵니다.
+ *
+ * @param {string} productId - 제품 ID
+ * @returns {Promise<Product>} 제품 객체를 반환합니다.
+ */
+export async function fetchProduct(productId: number) {
+    const product = await db.product.findUnique({
+        where: {id: productId},
+        select: {
+            id: true,
+            title: true,
+            photo: true,
+            price: true,
+            userId: true,
+            sold: true,
+        },
+    });
+
+    if (!product) {
+        throw new Error("Product not found");
+    }
+
+    return product;
+}
+
+/**
+ * 특정 제품을 구매합니다.
+ *
+ * @param {number} productId - 제품 ID
+ * @returns {Promise<Product>} 업데이트된 제품 객체를 반환합니다.
+ */
+export async function purchaseProduct(productId: number) {
+    const session = await getSession();
+    const userId = session?.id;
+
+    if (!userId) {
+        throw new Error("로그인된 사용자가 없습니다.");
+    }
+
+    const product = await db.product.update({
+        where: {id: productId},
+        data: {
+            sold: true,
+            buyerId: userId,
+        },
+        select: {
+            id: true,
+            title: true,
+            price: true,
+            photo: true,
+            description: true,
+            sold: true,
+            buyerId: true,
+            userId: true,
+        },
+    });
+
+    if (!product) {
+        throw new Error("제품을 찾을 수 없습니다.");
+    }
+
+    return product;
+}

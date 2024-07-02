@@ -40,6 +40,11 @@ export async function fetchChatRooms() {
                 },
                 take: 1, // 각 채팅방의 마지막 메시지 하나만 가져옵니다.
             },
+            Product: {
+                select: {
+                    id: true,
+                },
+            },
         },
     });
 
@@ -52,5 +57,6 @@ export async function fetchChatRooms() {
         })),
         lastMessage: room.messages[0]?.payload || "", // 마지막 메시지 내용 (없으면 빈 문자열)
         unreadCount: room.messages.filter((message) => !message.read && message.userId !== userId).length, // 읽지 않은 메시지 수 (현재 사용자가 보낸 메시지는 제외)
+        productId: room.Product ? room.Product.id : null,
     }));
 }

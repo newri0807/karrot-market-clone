@@ -8,12 +8,10 @@ import {UserCircleIcon} from "@heroicons/react/24/outline";
 
 interface ChatRoom {
     id: string;
-    users: {
-        username: string;
-        avatar: string | null;
-    }[];
+    users: {username: string; avatar: string | null}[];
     lastMessage: string;
     unreadCount: number;
+    productId: number | null;
 }
 
 export default function ChatList() {
@@ -39,7 +37,7 @@ export default function ChatList() {
                     key={room.id}
                     className="flex items-center gap-4 p-4 border-b border-neutral-600 hover:bg-neutral-800 transition-colors justify-around"
                 >
-                    <Link href={`/chat/view/${room.id}`} className="flex items-center gap-4 w-full">
+                    <Link href={`/chat/view/${room.id}/${room.productId}`} className="flex items-center gap-4 w-full">
                         {room?.users[0]?.avatar ? (
                             <Image
                                 src={room?.users[0]?.avatar || "./default-avatar.png"}

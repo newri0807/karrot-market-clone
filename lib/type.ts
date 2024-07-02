@@ -13,6 +13,7 @@ export interface User {
     email: string;
     username: string | null;
     avatar: string | null;
+    phone: string | null;
 }
 
 export interface ProductWithUser extends Product {
