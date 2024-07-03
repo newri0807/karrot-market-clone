@@ -1,6 +1,6 @@
 "use client"; // -> for useForm
 
-import React from "react";
+import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {signupSchema} from "@/lib/validators";
@@ -20,13 +20,18 @@ function SignupPage() {
         resolver: zodResolver(signupSchema),
     });
 
+    const [buttonText, setButtonText] = useState<string>("create account");
+
     const onSubmit = async (data: FormData) => {
+        setButtonText("Saving...");
         const result = await signupAction(data);
-        console.log(result);
+
         if (result?.error) {
             console.error(result?.errors);
+            setButtonText("create account");
             return;
         }
+        setButtonText("create account");
 
         // 성공적인 경우, 리디렉션은 signupAction에서 처리됩니다.
     };
@@ -48,7 +53,7 @@ function SignupPage() {
                     register={register}
                     error={errors.confirmPassword?.message}
                 />
-                <CustomButton text="create account" />
+                <CustomButton text={buttonText} />
             </form>
         </>
     );

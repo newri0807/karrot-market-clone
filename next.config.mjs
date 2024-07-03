@@ -5,6 +5,13 @@ const nextConfig = {
             bodySizeLimit: "15mb",
         },
     },
+    images: {
+        remotePatterns: [
+            {
+                hostname: "firebasestorage.googleapis.com",
+            },
+        ],
+    },
     // async redirects() {
     //     return [
     //         {

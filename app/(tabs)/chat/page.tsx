@@ -2,11 +2,7 @@ import ChatList from "@/components/chat-list";
 import React from "react";
 
 const page = () => {
-    return (
-        <div>
-            <ChatList />
-        </div>
-    );
+    return <ChatList />     
 };
 
 export default page;

@@ -43,6 +43,7 @@ export default function CommentList({postId}: UserClientProps) {
     const [userId, setUserId] = useState<number | null>(null);
     const [username, setUsername] = useState<string>("");
     const [editCommentId, setEditCommentId] = useState<number | null>(null);
+    const [buttonText, setButtonText] = useState<string>(editCommentId ? "Update" : "작성");
 
     useEffect(() => {
         const fetchSessionAndComments = async () => {
@@ -59,6 +60,8 @@ export default function CommentList({postId}: UserClientProps) {
 
     const handleAddComment: SubmitHandler<CommentFormInput> = async ({payload}) => {
         if (!userId) return;
+
+        setButtonText("Saving...");
 
         if (editCommentId) {
             // Handle editing
@@ -87,11 +90,13 @@ export default function CommentList({postId}: UserClientProps) {
                 console.error("Failed to add comment:", error);
             }
         }
+        setButtonText("작성");
     };
 
     const handleEditClick = (comment: Comment) => {
         setValue("payload", comment.payload);
         setEditCommentId(comment.id);
+        setButtonText("Update");
     };
 
     const handleDeleteClick = async (commentId: number) => {
@@ -155,7 +160,7 @@ export default function CommentList({postId}: UserClientProps) {
                     error={errors.payload?.message}
                     className="w-[250px]"
                 />
-                <CustomButton text={editCommentId ? "Update" : "작성"} className="w-[60px]" />
+                <CustomButton text={buttonText} className="w-[60px]" />
             </form>
         </div>
     );

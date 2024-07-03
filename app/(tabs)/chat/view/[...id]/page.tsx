@@ -8,6 +8,7 @@ import {fetchMessages, getUserFromSession, saveMessage, fetchProduct, purchasePr
 import {UserCircleIcon} from "@heroicons/react/24/outline";
 import CustomButton from "@/components/ui/csbutton";
 import {useRouter} from "next/navigation";
+import ModalLoading from '@/app/(tabs)/home/@modal/loading';
 
 const SUPABASE_PUBLIC_KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLIC_KEY!;
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -177,7 +178,7 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
         }
     };
 
-    if (!chatRoomId || !user) return <div>Loading...</div>;
+    if (!chatRoomId || !user) return <ModalLoading/>;
 
     return (
         <div className="p-5 flex flex-col gap-5 min-h-screen justify-end">

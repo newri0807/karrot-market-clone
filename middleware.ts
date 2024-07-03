@@ -28,6 +28,20 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL("/home", request.url));
         }
     }
+
+    // 제품 보기 페이지에서 뒤로 가기 버튼 클릭 시 루트 페이지로 리디렉션
+    const url = request.nextUrl.clone();
+    const referrer = request.headers.get("referer");
+
+    if (url.pathname.startsWith("/products/add") || url.pathname.startsWith("/products/edit")) {
+        console.log("referrer---", referrer);
+        // referrer가 존재하고 현재 페이지가 referrer와 동일하면 루트 페이지로 리디렉션
+        if (referrer && referrer.endsWith(url.pathname)) {
+            return NextResponse.redirect(new URL("/", request.url));
+        }
+    }
+
+    return NextResponse.next(); // 위 조건에 해당하지 않으면 다음 미들웨어 또는 페이지로 이동합니다.
 }
 
 export const config = {

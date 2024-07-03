@@ -24,7 +24,7 @@ const AddProductpage = () => {
     });
     const [preview, setPreview] = useState("");
     const [file, setFile] = useState<File | null>(null);
-    const router = useRouter();
+    const [buttonText, setButtonText] = useState<string>("add account"); 
 
     const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {files} = event.target;
@@ -36,6 +36,7 @@ const AddProductpage = () => {
         }
     };
     const onSubmit = async (data: FormData) => {
+        setButtonText("Saving...");
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -46,17 +47,20 @@ const AddProductpage = () => {
                     data: base64data.split(",")[1], // Base64 데이터만 추출
                 };
                 const result = await addProductAction({...data, photo: photoData});
-                console.log("result----", result);
+                
                 if (result?.errors) {
                     console.error(result.errors);
+                    setButtonText("add account");
                     return;
                 }
+                setButtonText("add account");
             };
         } else {
             setError("photo", {
                 type: "manual",
                 message: "사진을 추가해주세요.",
             });
+            setButtonText("add account");
             return;
         }
     };
@@ -119,7 +123,7 @@ const AddProductpage = () => {
                 <CustomInput type="text" name="title" placeholder="상품명" register={register} error={errors.title?.message} />
                 <CustomInput type="text" name="description" placeholder="상품설명" register={register} error={errors.description?.message} />
                 <CustomInput type="number" name="price" placeholder="가격" register={register} error={errors.price?.message} />
-                <CustomButton text="add account" />
+                <CustomButton text={buttonText} />
             </form>
         </div>
     );

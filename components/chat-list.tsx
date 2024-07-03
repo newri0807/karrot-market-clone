@@ -32,35 +32,41 @@ export default function ChatList() {
 
     return (
         <div>
-            {chatRooms.map((room) => (
-                <div
-                    key={room.id}
-                    className="flex items-center gap-4 p-4 border-b border-neutral-600 hover:bg-neutral-800 transition-colors justify-around"
-                >
-                    <Link href={`/chat/view/${room.id}/${room.productId}`} className="flex items-center gap-4 w-full">
-                        {room?.users[0]?.avatar ? (
-                            <Image
-                                src={room?.users[0]?.avatar || "./default-avatar.png"}
-                                alt={room.users[0].username}
-                                width={50}
-                                height={50}
-                                className="rounded-full object-cover border border-neutral-600"
-                            />
-                        ) : (
-                            <UserCircleIcon className="size-8" />
-                        )}
-                        <div className="flex-3">
-                            <div className="font-bold text-lg">{room.users[0].username}</div>
-                            <div className="text-sm text-gray-600">{room.lastMessage}</div>
-                        </div>
-                        {room.unreadCount > 0 && (
-                            <div className="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                                {room.unreadCount}
-                            </div>
-                        )}
-                    </Link>
+            {chatRooms.length === 0 ? (
+                <div className="flex flex-col justify-center item-center min-h-[85vh]">
+                    <p className="text-neutral-400 text-center">현재 사용중인 채팅이 없습니다.</p>
                 </div>
-            ))}
+            ) : (
+                chatRooms.map((room) => (
+                    <div
+                        key={room.id}
+                        className="flex items-center gap-4 p-4 border-b border-neutral-600 hover:bg-neutral-800 transition-colors justify-around"
+                    >
+                        <Link href={`/chat/view/${room.id}/${room.productId}`} className="flex items-center gap-4 w-full">
+                            {room?.users[0]?.avatar ? (
+                                <Image
+                                    src={room?.users[0]?.avatar || "./default-avatar.png"}
+                                    alt={room.users[0].username}
+                                    width={50}
+                                    height={50}
+                                    className="rounded-full object-cover border border-neutral-600"
+                                />
+                            ) : (
+                                <UserCircleIcon className="size-8" />
+                            )}
+                            <div className="flex-3">
+                                <div className="font-bold text-lg">{room.users[0].username}</div>
+                                <div className="text-sm text-gray-600">{room.lastMessage}</div>
+                            </div>
+                            {room.unreadCount > 0 && (
+                                <div className="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                                    {room.unreadCount}
+                                </div>
+                            )}
+                        </Link>
+                    </div>
+                ))
+            )}
         </div>
     );
 }

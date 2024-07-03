@@ -5,10 +5,10 @@ import db from "@/lib/db";
 import getSession from "@/lib/session";
 import {ProductWithUser} from "@/lib/type";
 import {productSchema} from "@/lib/validators";
-import fs from "fs";
-import {redirect} from "next/navigation";
-import path from "path";
+import {storage} from "@/lib/firebase";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import sharp from "sharp";
+import {redirect} from "next/navigation";
 
 // 제품 정보를 업데이트하는 함수
 export async function updateProductAction(data: any): Promise<{product?: ProductWithUser; errors?: any}> {
@@ -17,9 +17,6 @@ export async function updateProductAction(data: any): Promise<{product?: Product
     let photoUrl = existingPhoto;
 
     if (photo) {
-        // 파일 저장 경로 설정
-        const photoPath = path.join(process.cwd(), "public", photo.name);
-
         // 이미지 데이터 디코딩
         const imageBuffer = Buffer.from(photo.data, "base64");
 
@@ -36,11 +33,12 @@ export async function updateProductAction(data: any): Promise<{product?: Product
             finalImageBuffer = await sharp(resizedImageBuffer).jpeg({quality: 60}).toBuffer();
         }
 
-        // 파일 저장
-        await fs.promises.writeFile(photoPath, Buffer.from(photo.data, "base64"));
+        // Firebase Storage 경로 설정
+        const storageRef = ref(storage, `products/${photo.name}`);
 
-        // photo 경로 업데이트
-        photoUrl = `/${photo.name}`;
+        // 파일 업로드
+        const snapshot = await uploadBytes(storageRef, finalImageBuffer);
+        photoUrl = await getDownloadURL(snapshot.ref);
     }
 
     // 유효성 검사

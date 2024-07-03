@@ -7,6 +7,7 @@ import CustomButton from "@/components/ui/csbutton";
 import {getUserById, updateUser} from "./action";
 import {useRouter, useSearchParams} from "next/navigation";
 import {User} from "@/lib/type";
+import ModalLoading from '../../home/@modal/loading';
 
 interface FormValues {
     username: string;
@@ -37,6 +38,7 @@ function UpdateUserFormComponent() {
     const [file, setFile] = useState<File | null>(null);
     const [userInfo, setUserInfo] = useState<User | null>(null);
     const [generalError, setGeneralError] = useState<string | null>(null); // 일반 오류 메시지 상태
+    const [buttonText, setButtonText] = useState<string>("Update"); // 버튼 텍스트 상태
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
     const router = useRouter();
@@ -81,6 +83,7 @@ function UpdateUserFormComponent() {
             setGeneralError("사용자를 찾을 수 없습니다.");
             return;
         }
+        setButtonText("Saving...");
 
         try {
             if (file) {
@@ -102,6 +105,7 @@ function UpdateUserFormComponent() {
             }
         } catch (error) {
             setGeneralError("업데이트 중 오류가 발생했습니다.");
+            setButtonText("Update");
         }
     };
 
@@ -113,6 +117,7 @@ function UpdateUserFormComponent() {
                     setError(fieldName, {type: "manual", message: error.message});
                 }
             });
+            setButtonText("Update");
         } else {
             router.push(`/myPage`);
         }
@@ -161,14 +166,14 @@ function UpdateUserFormComponent() {
             <CustomInput type="email" name="email" placeholder="Email" register={register} error={errors.email?.message as string} />
             <CustomInput type="tel" name="phone" placeholder="010-xxxx-xxxx" register={register} error={errors.phone?.message as string} />
             {generalError && <p className="text-red-500">{generalError}</p>} {/* 일반 오류 메시지 표시 */}
-            <CustomButton text="Update" />
+            <CustomButton text={buttonText} />
         </form>
     );
 }
 
 export default function UpdateUserForm() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<ModalLoading/>}>
             <UpdateUserFormComponent />
         </Suspense>
     );

@@ -11,6 +11,7 @@ import {ProductWithUser} from "@/lib/type";
 import {getProductById} from "../../view/[id]/actions";
 import {deleteProductAction, updateProductAction} from "./actions";
 import CustomInput from "@/components/ui/csinput";
+import ModalLoading from '@/app/(tabs)/home/@modal/loading';
 
 type FormData = z.infer<typeof productSchema>;
 
@@ -28,6 +29,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [product, setProduct] = useState<ProductWithUser | null>(null);
+    const [buttonText, setButtonText] = useState<string>("update product");
     const router = useRouter();
 
     useEffect(() => {
@@ -58,6 +60,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
     };
 
     const onSubmit = async (data: FormData) => {
+        setButtonText("Saving...");
         let photoData = null;
         if (file) {
             const reader = new FileReader();
@@ -77,6 +80,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
                     console.error(result.errors);
                     return;
                 }
+                setButtonText("update product");
                 router.push(`/products/${params.id}`);
             };
         } else {
@@ -90,6 +94,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
                 console.error(result.errors);
                 return;
             }
+            setButtonText("update product");
             router.push(`/products/${params.id}`);
         }
     };
@@ -103,7 +108,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <ModalLoading />;
     }
 
     if (!product) {
@@ -171,7 +176,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
                 <CustomInput type="text" name="title" placeholder="상품명" register={register} error={errors.title?.message} />
                 <CustomInput type="text" name="description" placeholder="상품설명" register={register} error={errors.description?.message} />
                 <CustomInput type="number" name="price" placeholder="가격" register={register} error={errors.price?.message} />
-                <CustomButton text="update product" />
+                <CustomButton text={buttonText} />
             </form>
             <CustomButton text="delete product" className="bg-red-700 mt-3 hover:bg-red-800" onClick={handleDelete} />
         </div>

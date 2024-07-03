@@ -3,7 +3,7 @@
 import {useForm} from "react-hook-form";
 import {addReview, updateReview, fetchReviewById} from "./actions";
 import CustomButton from "@/components/ui/csbutton";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import Rating from "@/components/ui/Rating";
 
 type IdProps = {
@@ -26,13 +26,15 @@ function Page({params}: IdProps) {
         formState: {errors},
     } = useForm<FormValues>({
         defaultValues: {
-            rating: 1, 
+            rating: 1,
         },
     });
     const productId = Number(params.id[0]);
     const userId = Number(params.id[1]);
+    const [buttonText, setButtonText] = useState<string>("저장");
 
     const onSubmit = async (data: FormValues) => {
+        setButtonText("Loading...");
         try {
             if (data.id) {
                 // 업데이트 로직
@@ -41,12 +43,14 @@ function Page({params}: IdProps) {
                 // 추가 로직
                 await addReview(data.content, Number(data.rating), userId, productId);
             }
+            setButtonText("저장");
         } catch (error) {
             if (error instanceof Error) {
                 console.error("Error:", error.message);
             } else {
                 console.error("Unknown error:", error);
             }
+            setButtonText("저장");
         }
     };
 
@@ -90,7 +94,7 @@ function Page({params}: IdProps) {
             <Rating value={getValues("rating")} onChange={(value) => setValue("rating", value)} />
             {errors.rating && <p>{errors.rating.message as React.ReactNode}</p>}
 
-            <CustomButton text="저장" />
+            <CustomButton text={buttonText} />
         </form>
     );
 }

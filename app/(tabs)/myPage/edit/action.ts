@@ -1,10 +1,10 @@
 "use server";
 
 import db from "@/lib/db";
-import path from "path";
-import fs from "fs";
 import sharp from "sharp";
 import {userSchema} from "@/lib/validators";
+import {storage} from "@/lib/firebase";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 
 export async function updateUser(data: any) {
     const {username, email, phone, avatar, existingPhoto, userId} = data;
@@ -12,19 +12,6 @@ export async function updateUser(data: any) {
     try {
         let avatarUrl = existingPhoto;
         if (avatar) {
-            // Ensure the avatar directory exists
-            const avatarDir = path.join(process.cwd(), "public", "avatar");
-            try {
-                await fs.promises.mkdir(avatarDir, {recursive: true});
-            } catch (err) {
-                if ((err as any).code !== "EEXIST") {
-                    throw err;
-                }
-            }
-
-            // 파일 저장 경로 설정
-            const photoPath = path.join(avatarDir, avatar.name);
-
             // 이미지 데이터 디코딩
             const imageBuffer = Buffer.from(avatar.data, "base64");
 
@@ -41,11 +28,12 @@ export async function updateUser(data: any) {
                 finalImageBuffer = await sharp(resizedImageBuffer).jpeg({quality: 60}).toBuffer();
             }
 
-            // 파일 저장
-            await fs.promises.writeFile(photoPath, finalImageBuffer);
+            // Firebase Storage 경로 설정
+            const storageRef = ref(storage, `avatars/${avatar.name}`);
 
-            // photo 경로 업데이트
-            avatarUrl = `/avatar/${avatar.name}`;
+            // 파일 업로드
+            const snapshot = await uploadBytes(storageRef, finalImageBuffer);
+            avatarUrl = await getDownloadURL(snapshot.ref);
         }
 
         // 유효성 검사
