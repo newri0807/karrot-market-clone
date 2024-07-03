@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, Suspense} from "react";
 import {useForm, SubmitHandler} from "react-hook-form";
 import CustomInput from "@/components/ui/csinput";
 import CustomButton from "@/components/ui/csbutton";
@@ -15,7 +15,7 @@ interface FormValues {
     avatar?: string;
 }
 
-export default function UpdateUserForm() {
+function UpdateUserFormComponent() {
     const {
         register,
         handleSubmit,
@@ -141,5 +141,13 @@ export default function UpdateUserForm() {
             {generalError && <p className="text-red-500">{generalError}</p>} {/* 일반 오류 메시지 표시 */}
             <CustomButton text="Update" />
         </form>
+    );
+}
+
+export default function UpdateUserForm() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <UpdateUserFormComponent />
+        </Suspense>
     );
 }
