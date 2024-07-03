@@ -58,13 +58,16 @@ async function ProductDetailPage({params}: ProductDetailPageProps) {
                             <li>
                                 <CustomButton text="edit" path={`/products/edit/${params.id}`} className="bg-neutral-600 hover:bg-neutral-700" />
                             </li>
-                        ):(
-                             <li>
+                        ) : (
+                            <li>
                                 {/* 여기서 otherUserId는 상대방의 ID로 변경 */}
-                                <ChatButton text="채팅하기" otherUserId={productData.userId} produdctId={productData.id}/> 
+                                {productData && productData?.sold ? (
+                                    <CustomButton text="SOLD OUT" className="bg-neutral-700 cursor-not-allowed hover:bg-neutral-700" />
+                                ) : (
+                                    <ChatButton text="채팅하기" otherUserId={productData.userId} produdctId={productData.id} />
+                                )}
                             </li>
                         )}
-                       
                     </div>
                 </ul>
             </div>

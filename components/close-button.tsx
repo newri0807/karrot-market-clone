@@ -3,10 +3,15 @@
 import {XMarkIcon} from "@heroicons/react/24/solid";
 import {useRouter} from "next/navigation";
 
-export default function CloseButton() {
+interface CloseButtonProps {
+    productId: number;
+}
+
+export default function CloseButton({productId}: CloseButtonProps) {
     const router = useRouter();
+
     const onCloseClick = () => {
-        router.back();
+        window.location.reload();
     };
 
     return (

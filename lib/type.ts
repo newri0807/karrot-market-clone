@@ -7,6 +7,7 @@ export interface Product {
     created_at: string;
     updated_at: string;
     userId: number;
+    sold: boolean;
 }
 export interface User {
     id: number;

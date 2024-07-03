@@ -14,7 +14,7 @@ export default async function Modal({params}: {params: {id: string}}) {
     // await delay(3000);
     return (
         <div className="absolute w-full h-full z-50 flex items-center justify-center bg-[#161616] bg-opacity-60 left-0 top-0">
-            <CloseButton />
+            <CloseButton productId={id} />
             <div className="h-1/2 flex justify-center">
                 <>
                     {product && product.photo ? (
