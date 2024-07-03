@@ -8,7 +8,7 @@ import {Product} from "@/lib/type";
 import {getCachedProducts} from "@/app/(tabs)/home/actions";
 
 // 초기 로드 시 가져올 제품 수
-const INITIAL_LOAD = 1;
+const INITIAL_LOAD = 5;
 
 // 버튼 클릭 시 추가로 가져올 제품 수
 const LOAD_MORE_COUNT = 1;

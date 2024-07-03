@@ -72,7 +72,8 @@ export async function updateProductAction(data: any): Promise<{product?: Product
 
         await revalidateProductList(); // 캐시 무효화
 
-        redirect(`/products/${updatedProduct.id}`);
+        redirect(`/home`);
+        //redirect(`/products/${updatedProduct.id}`);
     } else {
         throw new Error("User session not found.");
     }

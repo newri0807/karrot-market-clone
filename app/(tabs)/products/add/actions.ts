@@ -69,7 +69,8 @@ export async function addProductAction(data: any) {
 
         await revalidateProductList(); // 캐시 무효화
 
-        redirect(`/products/view/${product.id}`);
+        redirect(`/home`);
+        //redirect(`/products/view/${product.id}`);
     } else {
         throw new Error("User session not found.");
     }
