@@ -6,9 +6,7 @@ export async function getUserPurchases(userId: number) {
     return await db.product.findMany({
         where: {buyerId: userId},
         include: {
-            reviews: {
-                where: {userId}, // 구매자가 리뷰를 작성했는지 확인
-            },
+            reviews: true,
         },
     });
 }
@@ -17,9 +15,7 @@ export async function getUserSales(userId: number) {
     return await db.product.findMany({
         where: {userId},
         include: {
-            reviews: {
-                where: {userId}, // 판매자가 리뷰를 작성했는지 확인
-            },
+            reviews: true,
         },
     });
 }

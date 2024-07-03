@@ -40,15 +40,19 @@ const ProductList: React.FC<ProductListProps> = ({products, type, userId}) => {
     // product.buyerId === userId : 현재 구매자가 로그인 한거
     // 그 반대면 판매자가 로그인 한거
 
-    const renderButton = (product: Product) => {
+    const renderButton = (product: Product, userId: number) => {
+        // Check if there are reviews and if there are reviews by other users
+        const hasReviews = product.reviews && product.reviews.length > 0;
+        const hasOtherUserReview = hasReviews && product.reviews && product.reviews.some((review) => review.userId !== userId);
+
+        console.log(product, "product----", hasOtherUserReview);
+
         return (
             <>
-                {product.sold && product.buyerId !== userId ? (
+                {hasReviews && hasOtherUserReview && (
                     <CustomButton text="상대방 리뷰" onClick={(event) => handleReviewClick(event, product.id, product.buyerId!)} className="mb-2" />
-                ) : (
-                    <CustomButton text="상대방 리뷰" onClick={(event) => handleReviewClick(event, product.id, product.userId)} className="mb-2" />
                 )}
-                {product.reviews && product.reviews.length === 0 ? (
+                {!product.reviews || product.reviews.length === 0 || product.reviews.every((review: any) => review.userId !== userId) ? (
                     <CustomButton text="리뷰 남기기" onClick={(event) => handleReviewClick(event, product.id)} />
                 ) : (
                     <CustomButton
@@ -66,17 +70,17 @@ const ProductList: React.FC<ProductListProps> = ({products, type, userId}) => {
             {products.map((product) => (
                 <li
                     key={product.id}
-                    className="flex justify-around items-center border-b border-neutral-600 pb-2 last:border-b-0 cursor-pointer"
+                    className="flex justify-between items-center border-b border-neutral-600 pb-2 last:border-b-0 cursor-pointer"
                     onClick={() => router.push(`/products/view/${product.id}`)}
                 >
-                    <div className="flex items-center justify-around gap-4 ">
-                        <div className="relative w-24 h-24 border-neutral-600 border rounded-md">
-                            <Image fill src={product.photo} alt={product.title} className="object-cover" />
+                    <div className="flex items-center justify-between my-2 w-full gap-4">
+                        <div className="relative w-24 h-24 border-neutral-600 border rounded-md flex-shrink-0">
+                            <Image fill src={product.photo} alt={product.title} className="object-cover rounded-sm" />
                         </div>
-                        <div className="flex gap-4 items-center">
-                            <p className="font-semibold min-w-[100px]">{product.title}</p>
+                        <div className="flex-1 min-w-0">
+                            <p className="font-semibold truncate">{product.title}</p>
                         </div>
-                        <div className="w-1/4">{renderButton(product)}</div>
+                        <div className="w-20 flex-shrink-0">{renderButton(product, userId)}</div>
                     </div>
                 </li>
             ))}

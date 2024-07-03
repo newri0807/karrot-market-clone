@@ -69,7 +69,13 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
                 channel.current = client.channel(`room-${chatRoomId}`);
                 channel.current
                     .on("broadcast", {event: "message"}, (payload) => {
-                        setMessages((prevMsgs) => [...prevMsgs, payload.payload]);
+                        setMessages((prevMsgs) => {
+                            // Check for duplicates before adding
+                            if (prevMsgs.find((msg) => msg.id === payload.payload.id)) {
+                                return prevMsgs;
+                            }
+                            return [...prevMsgs, payload.payload];
+                        });
                     })
                     .subscribe();
 
@@ -144,7 +150,6 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
             read: newMessage.read,
         };
 
-        setMessages((prevMsgs) => [...prevMsgs, chatMessage]);
         channel.current?.send({
             type: "broadcast",
             event: "message",
