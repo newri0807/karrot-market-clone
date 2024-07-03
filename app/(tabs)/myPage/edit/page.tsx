@@ -15,6 +15,16 @@ interface FormValues {
     avatar?: string;
 }
 
+interface Result {
+    success: boolean;
+    errors?: Error[];
+}
+
+interface Error {
+    path: string[];
+    message: string;
+}
+
 function UpdateUserFormComponent() {
     const {
         register,
@@ -82,22 +92,34 @@ function UpdateUserFormComponent() {
                         name: file.name,
                         data: base64data.split(",")[1], // Base64 데이터만 추출
                     };
-                    await updateUser({...data, avatar: avatarData, userId: id});
+                    const result = await updateUser({...data, avatar: avatarData, userId: id});
+
+                    handleResult(result as Result);
                 };
             } else {
                 const result = await updateUser({...data, existingPhoto: userInfo?.avatar, userId: id});
-
-                if (result?.errors) {
-                    return result.errors.forEach((error: any) => {
-                        setError(error.path[0], {type: "manual", message: error.message});
-                    });
-                }
+                handleResult(result as Result);
             }
-
-            router.push(`/myPage`);
         } catch (error) {
             setGeneralError("업데이트 중 오류가 발생했습니다.");
         }
+    };
+
+    const handleResult = (result: Result) => {
+        if (result.success === false) {
+            result.errors!.forEach((error: Error) => {
+                const fieldName = error.path[0];
+                if (isFieldName(fieldName)) {
+                    setError(fieldName, {type: "manual", message: error.message});
+                }
+            });
+        } else {
+            router.push(`/myPage`);
+        }
+    };
+
+    const isFieldName = (fieldName: string | number): fieldName is keyof FormValues => {
+        return ["username", "email", "phone", "avatar"].includes(fieldName as string);
     };
 
     return (

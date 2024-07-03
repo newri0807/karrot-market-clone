@@ -8,14 +8,14 @@ import {userSchema} from "@/lib/validators";
 
 export async function updateUser(data: any) {
     const {username, email, phone, avatar, existingPhoto, userId} = data;
-    console.log("avatar------", avatar, existingPhoto);
+
     try {
         let avatarUrl = existingPhoto;
         if (avatar) {
             // Ensure the avatar directory exists
             const avatarDir = path.join(process.cwd(), "public", "avatar");
             try {
-                await fs.mkdirSync(avatarDir);
+                await fs.promises.mkdir(avatarDir, {recursive: true});
             } catch (err) {
                 if ((err as any).code !== "EEXIST") {
                     throw err;
@@ -56,8 +56,12 @@ export async function updateUser(data: any) {
             avatar: avatarUrl ? avatarUrl : undefined,
         });
 
-        if (result?.error) {
-            return {errors: result.error.errors};
+        if (result.success === false) {
+            // Convert error to a plain object
+            const errors = result.error.errors.map((err) => ({path: err.path, message: err.message}));
+
+            console.log(result, "result----");
+            return {success: false, errors};
         } else {
             // 업데이트 데이터 준비
             const updateData = {
@@ -66,6 +70,8 @@ export async function updateUser(data: any) {
                 phone: result.data.phone,
                 avatar: avatarUrl,
             };
+
+            console.log(updateData, "updateData----");
 
             await db.user.update({
                 where: {id: Number(userId)},

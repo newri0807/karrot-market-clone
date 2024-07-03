@@ -47,22 +47,28 @@ const ProductList: React.FC<ProductListProps> = ({products, type, userId}) => {
 
         console.log(product, "product----", hasOtherUserReview);
 
-        return (
-            <>
-                {hasReviews && hasOtherUserReview && (
-                    <CustomButton text="상대방 리뷰" onClick={(event) => handleReviewClick(event, product.id, product.buyerId!)} className="mb-2" />
-                )}
-                {!product.reviews || product.reviews.length === 0 || product.reviews.every((review: any) => review.userId !== userId) ? (
-                    <CustomButton text="리뷰 남기기" onClick={(event) => handleReviewClick(event, product.id)} />
-                ) : (
-                    <CustomButton
-                        text="내 리뷰"
-                        onClick={(event) => handleReviewClick(event, product.id)}
-                        className="bg-neutral-600 hover:bg-neutral-700"
-                    />
-                )}
-            </>
-        );
+       return (
+           <>
+               {hasReviews && hasOtherUserReview && (
+                   <CustomButton text="상대방 리뷰" onClick={(event) => handleReviewClick(event, product.id, product.buyerId!)} className="mb-2" />
+               )}
+
+               {product && product.sold && (
+                   <>
+                       {!product.reviews || product.reviews.length === 0 || product.reviews.every((review: any) => review.userId !== userId) ? (
+                           <CustomButton text="리뷰 남기기" onClick={(event) => handleReviewClick(event, product.id)} />
+                       ) : (
+                           <CustomButton
+                               text="내 리뷰"
+                               onClick={(event) => handleReviewClick(event, product.id)}
+                               className="bg-neutral-600 hover:bg-neutral-700"
+                           />
+                       )}
+                   </>
+               )}
+           </>
+       );
+
     };
 
     return (
