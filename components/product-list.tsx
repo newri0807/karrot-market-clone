@@ -33,8 +33,14 @@ const ProductList = () => {
                 const {products: initialProducts, totalCount} = await getCachedProducts(INITIAL_LOAD, 0);
                 console.log(initialProducts, totalCount, "initialProducts-----");
 
+                // 'sold' 속성을 추가하여 제품 데이터를 변환
+                const productsWithSold: Product[] = initialProducts.map((product: any) => ({
+                    ...product,
+                    sold: product.sold || false,
+                }));
+
                 // 제품 데이터를 상태에 저장
-                setProducts(initialProducts);
+                setProducts(productsWithSold);
                 setTotalCount(totalCount);
 
                 // 로드된 제품 수를 업데이트
@@ -55,8 +61,14 @@ const ProductList = () => {
             // 서버 액션을 사용해 추가 제품 데이터를 가져옴
             const {products: moreProducts} = await getCachedProducts(LOAD_MORE_COUNT, skip);
 
+            // 'sold' 속성을 추가하여 제품 데이터를 변환
+            const productsWithSold: Product[] = moreProducts.map((product: any) => ({
+                ...product,
+                sold: product.sold || false,
+            }));
+
             // 이전 제품 데이터에 추가 제품 데이터를 병합하여 상태를 업데이트
-            setProducts((prevProducts) => [...prevProducts, ...moreProducts]);
+            setProducts((prevProducts) => [...prevProducts, ...productsWithSold]);
 
             // 로드된 제품 수를 업데이트
             setSkip((prevSkip) => prevSkip + LOAD_MORE_COUNT);
