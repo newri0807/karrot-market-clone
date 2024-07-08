@@ -7,7 +7,8 @@ import CustomButton from "@/components/ui/csbutton";
 import {getUserById, updateUser} from "./action";
 import {useRouter, useSearchParams} from "next/navigation";
 import {User} from "@/lib/type";
-import ModalLoading from '../../home/@modal/loading';
+import ModalLoading from "../../home/@modal/loading";
+import {handleFailure, handleSuccess} from "@/lib/utils";
 
 interface FormValues {
     username: string;
@@ -32,6 +33,7 @@ function UpdateUserFormComponent() {
         handleSubmit,
         setValue,
         setError,
+        reset,
         formState: {errors},
     } = useForm<FormValues>();
     const [preview, setPreview] = useState<string>("");
@@ -105,7 +107,7 @@ function UpdateUserFormComponent() {
             }
         } catch (error) {
             setGeneralError("업데이트 중 오류가 발생했습니다.");
-            setButtonText("Update");
+            handleFailure(setButtonText, "Update", error);
         }
     };
 
@@ -116,9 +118,10 @@ function UpdateUserFormComponent() {
                 if (isFieldName(fieldName)) {
                     setError(fieldName, {type: "manual", message: error.message});
                 }
+                handleFailure(setButtonText, "Update", error);
             });
-            setButtonText("Update");
         } else {
+            handleSuccess(setButtonText, reset, "Update", "Success👌");
             router.push(`/myPage`);
         }
     };
@@ -173,7 +176,7 @@ function UpdateUserFormComponent() {
 
 export default function UpdateUserForm() {
     return (
-        <Suspense fallback={<ModalLoading/>}>
+        <Suspense fallback={<ModalLoading />}>
             <UpdateUserFormComponent />
         </Suspense>
     );

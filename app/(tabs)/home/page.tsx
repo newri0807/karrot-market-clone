@@ -3,6 +3,7 @@ import Link from "next/link";
 import ProductList from "@/components/product-list";
 import CustomButton from "@/components/ui/csbutton";
 import {PlusIcon} from "@heroicons/react/24/outline";
+import TabMenu from "@/components/ui/tabMenu";
 
 export const metadata = {
     title: "Home",

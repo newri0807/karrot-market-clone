@@ -9,6 +9,7 @@ import CustomInput from "./ui/csinput";
 import CustomButton from "./ui/csbutton";
 import Image from "next/image";
 import {PencilIcon, TrashIcon, UserCircleIcon} from "@heroicons/react/24/outline";
+import {handleFailure, handleSuccess} from "@/lib/utils";
 
 interface Comment {
     id: number;
@@ -60,7 +61,7 @@ export default function CommentList({postId}: UserClientProps) {
 
     const handleAddComment: SubmitHandler<CommentFormInput> = async ({payload}) => {
         if (!userId) return;
-
+        const defaultText = editCommentId ? "Update" : "작성";
         setButtonText("Saving...");
 
         if (editCommentId) {
@@ -72,9 +73,9 @@ export default function CommentList({postId}: UserClientProps) {
                     optimisticComments.map((comment) => (comment.id === editCommentId ? {...comment, payload: updatedComment.payload} : comment))
                 );
                 setEditCommentId(null);
-                reset();
+                handleSuccess(setButtonText, reset, defaultText, "Success👌");
             } catch (error) {
-                console.error("Failed to update comment:", error);
+                handleFailure(setButtonText, defaultText, error);
             }
         } else {
             // Handle adding new comment
@@ -85,18 +86,17 @@ export default function CommentList({postId}: UserClientProps) {
                 };
                 setOptimisticComments([...optimisticComments, formattedComment]);
                 setComments([...comments, formattedComment]);
-                reset();
+                handleSuccess(setButtonText, reset, defaultText, "Success👌");
             } catch (error) {
-                console.error("Failed to add comment:", error);
+                handleFailure(setButtonText, defaultText, error);
             }
         }
-        setButtonText("작성");
     };
 
     const handleEditClick = (comment: Comment) => {
         setValue("payload", comment.payload);
         setEditCommentId(comment.id);
-        setButtonText("Update");
+        setButtonText("Success👌");
     };
 
     const handleDeleteClick = async (commentId: number) => {

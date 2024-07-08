@@ -8,6 +8,7 @@ import CustomButton from "@/components/ui/csbutton";
 import {useForm} from "react-hook-form";
 import {loginAction} from "./actions";
 import {loginSchema} from "@/lib/validators";
+import {handleFailure, handleSuccess} from "@/lib/utils";
 
 type FormData = z.infer<typeof loginSchema>;
 
@@ -15,6 +16,7 @@ const LoginPage = () => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: {errors},
     } = useForm<FormData>({
         resolver: zodResolver(loginSchema),
@@ -30,11 +32,11 @@ const LoginPage = () => {
 
         if (result?.error) {
             setError(result.error);
-            setButtonText("Login");
+            handleFailure(setButtonText, "Login", error);
             return;
         }
 
-        setButtonText("Login");
+        handleSuccess(setButtonText, reset, "Login", "Login Success👌");
         // 성공적인 경우, 리디렉션은 loginAction에서 처리됩니다.
     };
 

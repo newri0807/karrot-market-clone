@@ -5,6 +5,7 @@ import {addReview, updateReview, fetchReviewById} from "./actions";
 import CustomButton from "@/components/ui/csbutton";
 import {useEffect, useState} from "react";
 import Rating from "@/components/ui/Rating";
+import {handleFailure, handleSuccess} from "@/lib/utils";
 
 type IdProps = {
     params: {id: string};
@@ -23,6 +24,7 @@ function Page({params}: IdProps) {
         setValue,
         getValues,
         watch,
+        reset,
         formState: {errors},
     } = useForm<FormValues>({
         defaultValues: {
@@ -43,14 +45,15 @@ function Page({params}: IdProps) {
                 // 추가 로직
                 await addReview(data.content, Number(data.rating), userId, productId);
             }
-            setButtonText("저장");
+            handleSuccess(setButtonText, reset, "저장", "Success👌");
         } catch (error) {
             if (error instanceof Error) {
                 console.error("Error:", error.message);
             } else {
                 console.error("Unknown error:", error);
             }
-            setButtonText("저장");
+
+            handleFailure(setButtonText, "저장", error);
         }
     };
 

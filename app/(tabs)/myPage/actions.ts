@@ -8,6 +8,9 @@ export async function getUserPurchases(userId: number) {
         include: {
             reviews: true,
         },
+        orderBy: {
+            created_at: "desc",
+        },
     });
 }
 
@@ -16,6 +19,9 @@ export async function getUserSales(userId: number) {
         where: {userId},
         include: {
             reviews: true,
+        },
+        orderBy: {
+            created_at: "desc",
         },
     });
 }

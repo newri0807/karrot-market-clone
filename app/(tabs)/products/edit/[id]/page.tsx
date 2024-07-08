@@ -11,7 +11,8 @@ import {ProductWithUser} from "@/lib/type";
 import {getProductById} from "../../view/[id]/actions";
 import {deleteProductAction, updateProductAction} from "./actions";
 import CustomInput from "@/components/ui/csinput";
-import ModalLoading from '@/app/(tabs)/home/@modal/loading';
+import ModalLoading from "@/app/(tabs)/home/@modal/loading";
+import {handleSuccess} from "@/lib/utils";
 
 type FormData = z.infer<typeof productSchema>;
 
@@ -21,6 +22,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
         handleSubmit,
         control,
         setValue,
+        reset,
         formState: {errors},
     } = useForm<FormData>({
         resolver: zodResolver(productSchema),
@@ -80,7 +82,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
                     console.error(result.errors);
                     return;
                 }
-                setButtonText("update product");
+                handleSuccess(setButtonText, reset, "update product", "Success👌");
                 router.push(`/products/${params.id}`);
             };
         } else {
@@ -94,7 +96,7 @@ const EditProductPage = ({params}: {params: {id: string}}) => {
                 console.error(result.errors);
                 return;
             }
-            setButtonText("update product");
+            handleSuccess(setButtonText, reset, "update product", "Success👌");
             router.push(`/products/${params.id}`);
         }
     };

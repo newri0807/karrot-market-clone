@@ -9,6 +9,7 @@ import {addProductAction} from "./actions";
 import CustomInput from "@/components/ui/csinput";
 import CustomButton from "@/components/ui/csbutton";
 import {useRouter} from "next/navigation";
+import {handleFailure, handleSuccess} from "@/lib/utils";
 
 type FormData = z.infer<typeof productSchema>;
 
@@ -18,13 +19,14 @@ const AddProductpage = () => {
         handleSubmit,
         setError,
         control,
+        reset,
         formState: {errors},
     } = useForm<FormData>({
         resolver: zodResolver(productSchema),
     });
     const [preview, setPreview] = useState("");
     const [file, setFile] = useState<File | null>(null);
-    const [buttonText, setButtonText] = useState<string>("add account"); 
+    const [buttonText, setButtonText] = useState<string>("add product");
 
     const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {files} = event.target;
@@ -47,20 +49,20 @@ const AddProductpage = () => {
                     data: base64data.split(",")[1], // Base64 데이터만 추출
                 };
                 const result = await addProductAction({...data, photo: photoData});
-                
+
                 if (result?.errors) {
                     console.error(result.errors);
-                    setButtonText("add account");
+                    handleFailure(setButtonText, "add product", result.errors);
                     return;
                 }
-                setButtonText("add account");
+                handleSuccess(setButtonText, reset, "add product", "Success👌");
             };
         } else {
             setError("photo", {
                 type: "manual",
                 message: "사진을 추가해주세요.",
             });
-            setButtonText("add account");
+            setButtonText("add product");
             return;
         }
     };

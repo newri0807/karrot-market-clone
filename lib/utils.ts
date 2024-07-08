@@ -19,3 +19,28 @@ export function formatToTimeAgo(date: string): string {
 export function formatToWon(price: number): string {
     return price.toLocaleString("ko-KR"); // 1000 -> 1,000
 }
+
+
+// form > submit button text -- 관리
+export const resetButtonText = (setButtonText: React.Dispatch<React.SetStateAction<string>>, defaultText: string) => {
+    setTimeout(() => {
+        setButtonText(defaultText);
+    }, 2000);
+};
+
+export const handleSuccess = (
+    setButtonText: React.Dispatch<React.SetStateAction<string>>,
+    reset: () => void,
+    defaultText: string,
+    message: string
+) => {
+    setButtonText(message);
+    reset();
+    resetButtonText(setButtonText, defaultText);
+};
+
+export const handleFailure = (setButtonText: React.Dispatch<React.SetStateAction<string>>, defaultText: string, error: any) => {
+    console.error("Failed to update comment:", error);
+    setButtonText("Fail😭");
+    resetButtonText(setButtonText, defaultText);
+};

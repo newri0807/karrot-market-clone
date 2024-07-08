@@ -78,31 +78,48 @@ const ProductList = () => {
         setLoading(false); // 로딩 상태를 false로 설정
     }
 
-    console.log(skip, "skip-----");
+    const renderSkeletons = () => {
+        return Array.from({length: 5}).map((_, index) => (
+            <div key={index} className="flex gap-5 my-3 animate-pulse">
+                <div className="relative size-28  rounded-md overflow-hidden border-neutral-600 border bg-neutral-700"></div>
+                <div className="flex flex-col gap-1 justify-center text-left w-2/3">
+                    <div className="h-6 bg-neutral-700 rounded"></div>
+                    <div className="h-4 bg-neutral-700 rounded mt-2"></div>
+                    <div className="h-6 bg-neutral-700 rounded mt-2"></div>
+                </div>
+            </div>
+        ));
+    };
 
     return (
         <>
-            {products.map((product) => (
-                <Link key={product.id} href={`/products/view/${product.id}`} className="flex gap-5 my-3 hover:opacity-80">
-                    <div className="relative size-28 rounded-md overflow-hidden border-neutral-600 border">
-                        <Image fill src={product.photo} alt={product.title} className="object-cover" />
-                    </div>
-                    <div className="flex flex-col gap-1 justify-center text-left">
-                        <span className="text-lg">{product.title}</span>
-                        <span className="text-sm text-neutral-500">{formatToTimeAgo(product.created_at.toString())}</span>
-                        <span className="text-lg font-semibold">{formatToWon(product.price)}</span>
-                    </div>
-                </Link>
-            ))}
+            {loading && !products.length
+                ? renderSkeletons()
+                : products.map((product) => (
+                      <Link key={product.id} href={`/products/view/${product.id}`} className="flex gap-5 my-3 hover:opacity-80">
+                          <div className="relative size-28 rounded-md overflow-hidden border-neutral-600 border">
+                              <Image fill src={product.photo} alt={product.title} className="object-cover" />
+                          </div>
+                          <div className="flex flex-col gap-1 justify-center text-left">
+                              <span className="text-lg">{product.title}</span>
+                              <span className="text-sm text-neutral-500">{formatToTimeAgo(product.created_at.toString())}</span>
+                              <span className="text-lg font-semibold">{formatToWon(product.price)}</span>
+                          </div>
+                      </Link>
+                  ))}
 
             {/* "Load more" 버튼 */}
             {skip < totalCount && (
                 <button
                     onClick={loadMoreProducts} // 버튼 클릭 시 추가 제품을 로드
                     disabled={loading} // 로딩 중일 때 버튼 비활성화
-                    className="h-10 w-[100px] text-center p-2 bg-neutral-600 rounded-sm hover:opacity-95"
+                    className={`h-10 w-[100px] text-center p-2 bg-neutral-600 rounded-sm ${loading ? "cursor-not-allowed" : "hover:opacity-95"}`}
                 >
-                    {loading ? "Loading..." : <span className="text-neutral-300 text-sm ">Load more</span>}
+                    {loading ? (
+                        <span className="text-neutral-300 text-sm">Loading...</span>
+                    ) : (
+                        <span className="text-neutral-300 text-sm">Load more</span>
+                    )}
                 </button>
             )}
         </>

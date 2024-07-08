@@ -8,6 +8,7 @@ import CustomInput from "@/components/ui/csinput";
 import CustomButton from "@/components/ui/csbutton";
 import {z} from "zod";
 import {signupAction} from "./actions";
+import {handleFailure, handleSuccess} from "@/lib/utils";
 
 type FormData = z.infer<typeof signupSchema>;
 
@@ -15,6 +16,7 @@ function SignupPage() {
     const {
         register,
         handleSubmit,
+        reset,
         formState: {errors},
     } = useForm<FormData>({
         resolver: zodResolver(signupSchema),
@@ -28,11 +30,11 @@ function SignupPage() {
 
         if (result?.error) {
             console.error(result?.errors);
-            setButtonText("create account");
+            handleFailure(setButtonText, "create account", result?.errors);
             return;
         }
-        setButtonText("create account");
 
+        handleSuccess(setButtonText, reset, "create account", "Success👌");
         // 성공적인 경우, 리디렉션은 signupAction에서 처리됩니다.
     };
 

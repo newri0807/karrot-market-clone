@@ -36,9 +36,9 @@ async function ProductDetailPage({params}: ProductDetailPageProps) {
             {sessionData && productData.userId === sessionData.id && (
                 <div className="mt-8 flex items-center">
                     {productData?.user?.avatar ? (
-                        <Image src={productData.user.avatar} alt={productData.user.email} width={40} height={40} className="rounded-full" />
+                        <Image src={productData.user.avatar} alt={productData.user.email} width={40} height={40} className="rounded-full size-12" />
                     ) : (
-                        <UserCircleIcon className="size-10" />
+                        <UserCircleIcon className="size-12" />
                     )}
                     <div className="ml-4">
                         <p className="text-lg font-semibold">{productData?.user?.email}</p>

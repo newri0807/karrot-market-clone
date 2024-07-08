@@ -27,9 +27,9 @@ async function Username() {
     return (
         <div className="flex justify-center items-center flex-col gap-3">
             {user?.avatar ? (
-                <Image src={user?.avatar} alt={user?.username} width={140} height={140} className="rounded-full " />
+                <Image src={user?.avatar} alt={user?.username} width={140} height={140} className="rounded-full object-cover size-32" />
             ) : (
-                <UserCircleIcon className="w-8 h-8" />
+                <UserCircleIcon className="size-32" />
             )}
             <h1>Welcome! {user?.username}!</h1>
         </div>
@@ -56,19 +56,19 @@ export default async function MyPage() {
                     <CustomButton text="Edit Profile" path={`/myPage/edit?id=${session.id!}`} />
                 </div>
                 <section className="my-4">
-                    <h2 className="border-b border-neutral-600 mb-2 text-left">🥕 판매한 제품들</h2>
+                    <h2 className="border-b border-neutral-600 mb-2 text-left">🥕 판매 상품</h2>
                     {soldProducts.length > 0 ? (
                         <ProductList products={soldProducts} type="sold" userId={session.id!} />
                     ) : (
-                        <p className="h-7 text-neutral-500">판매된 제품이 없습니다.</p>
+                        <p className="h-7 text-neutral-500">판매한 상품이 없습니다.</p>
                     )}
                 </section>
                 <section className="my-4">
-                    <h2 className="border-b border-neutral-600 mb-2 text-left">🥕 구매한 제품들</h2>
+                    <h2 className="border-b border-neutral-600 mb-2 text-left">🥕 구매 상품</h2>
                     {purchasedProducts.length > 0 ? (
                         <ProductList products={purchasedProducts} type="purchased" userId={session.id!} />
                     ) : (
-                        <p className="h-7 text-neutral-500">구매한 제품이 없습니다.</p>
+                        <p className="h-7 text-neutral-500">구매한 상품이 없습니다.</p>
                     )}
                 </section>
             </div>

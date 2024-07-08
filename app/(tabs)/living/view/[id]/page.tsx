@@ -29,7 +29,7 @@ export default async function PostDetail({params}: {params: {id: string}}) {
         <div className="p-5 text-white">
             <div className="flex items-center gap-2 mb-2 *:text-left">
                 {post?.user?.avatar ? (
-                    <Image width={28} height={28} className="size-7 rounded-full" src={post.user.avatar!} alt={post.user.username} />
+                    <Image width={28} height={28} className="size-10 rounded-full" src={post.user.avatar!} alt={post.user.username} />
                 ) : (
                     <UserCircleIcon className="size-10" />
                 )}
