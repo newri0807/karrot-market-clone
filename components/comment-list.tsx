@@ -45,6 +45,7 @@ export default function CommentList({postId}: UserClientProps) {
     const [username, setUsername] = useState<string>("");
     const [editCommentId, setEditCommentId] = useState<number | null>(null);
     const [buttonText, setButtonText] = useState<string>(editCommentId ? "Update" : "작성");
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchSessionAndComments = async () => {
@@ -54,6 +55,7 @@ export default function CommentList({postId}: UserClientProps) {
 
             const fetchedComments = await getComments(postId);
             setComments(fetchedComments);
+            setLoading(false);
         };
 
         fetchSessionAndComments();
@@ -110,6 +112,32 @@ export default function CommentList({postId}: UserClientProps) {
         }
     };
 
+    const CommentListSkeleton = () => {
+        return (
+            <ul className="my-4 border-neutral-600 border-t border-b px-2">
+                {[...Array(3)].map((_, index) => (
+                    <li key={index} className="my-3 w-full text-left">
+                        <div className="flex justify-between items-start flex-wrap">
+                            <p className="flex-grow break-words w-full">
+                                <span className="text-neutral-700 ">ㄴ</span>
+                                <span className="bg-neutral-700 h-4 w-3/4 inline-block rounded"></span>
+                            </p>
+                            <div className="w-full flex items-center gap-1 justify-end text-neutral-700  text-sm my-1">
+                                <span>by</span>
+                                <UserCircleIcon className="size-8 bg-neutral-700 rounded-full" />
+                                <span className="bg-neutral-700 h-4 w-20 inline-block rounded"></span>
+                            </div>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        );
+    };
+
+    if (loading) {
+        return <CommentListSkeleton />;
+    }
+
     return (
         <div>
             <ul className="my-4 border-neutral-600 border-t border-b px-2 ">
@@ -127,10 +155,10 @@ export default function CommentList({postId}: UserClientProps) {
                                         alt={comment?.user?.username}
                                         width={40}
                                         height={40}
-                                        className="rounded-full"
+                                        className="rounded-full size-8"
                                     />
                                 ) : (
-                                    <UserCircleIcon className="w-6 h-6" />
+                                    <UserCircleIcon className="size-8" />
                                 )}
                                 <span>{comment.user.username}</span>
                                 {userId === comment.userId && (
