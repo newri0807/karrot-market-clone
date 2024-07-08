@@ -24,7 +24,7 @@ export function formatToWon(price: number): string {
 export const resetButtonText = (setButtonText: React.Dispatch<React.SetStateAction<string>>, defaultText: string) => {
     setTimeout(() => {
         setButtonText(defaultText);
-    }, 2000);
+    }, 1000);
 };
 
 export const handleSuccess = (
@@ -36,7 +36,9 @@ export const handleSuccess = (
 ) => {
     setButtonText(message);
     resetButtonText(setButtonText, defaultText);
-    if (type) reset();
+    if (type) {
+        reset();
+    }
 };
 
 export const handleFailure = (setButtonText: React.Dispatch<React.SetStateAction<string>>, defaultText: string, error: any) => {

@@ -29,7 +29,7 @@ async function UserInfo() {
     return (
         <div className="flex justify-center items-center flex-col gap-3">
             {avatarUrl ? (
-                <Image src={avatarUrl} alt={user?.username} width={140} height={140} className="rounded-full object-cover size-32" />
+                <Image src={avatarUrl} alt={user?.username} width={140} height={140} className="rounded-full object-cover size-32 bg-white" />
             ) : (
                 <UserCircleIcon className="size-32" />
             )}

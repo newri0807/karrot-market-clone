@@ -1,17 +1,19 @@
 import Link from "next/link";
 import React from "react";
 import {formatToTimeAgo} from "@/lib/utils";
-import {ChatBubbleBottomCenterIcon, HandThumbUpIcon} from "@heroicons/react/24/solid";
-import {getPosts} from "./actions";
+import {ChatBubbleBottomCenterIcon, HandThumbUpIcon, PlusIcon} from "@heroicons/react/24/solid";
+import {getPosts, getCachedPosts} from "./actions";
+import CustomButton from "@/components/ui/csbutton";
+import {revalidatePath} from "next/cache";
 
 export const metadata = {
     title: "동네생활",
 };
 
 export default async function page() {
-    const posts = await getPosts();
+    const posts = await getCachedPosts();
     return (
-        <div className="p-5 flex flex-col *:text-left">
+        <div className="px-5 flex flex-col *:text-left">
             {posts.length === 0 ? (
                 <div className="flex flex-col justify-center item-center min-h-[85vh]">
                     <p className="text-neutral-400 text-center">등록된 포스트가 없습니다.</p>
@@ -21,7 +23,7 @@ export default async function page() {
                     <Link
                         key={post.id}
                         href={`/living/view/${post.id}`}
-                        className="pb-5 mb-5 border-b border-neutral-500 text-neutral-400 flex flex-col gap-2 last:pb-0 last:border-b-0"
+                        className="hover:opacity-80 hover:bg-neutral-800 py-5  border-b border-neutral-500 text-neutral-400 flex flex-col gap-2 last:pb-0 last:border-b-0"
                     >
                         <h2 className="text-white text-lg font-semibold">{post.title}</h2>
                         <p>{post.description}</p>
@@ -45,6 +47,12 @@ export default async function page() {
                     </Link>
                 ))
             )}
+
+            <CustomButton
+                className="h-10 w-10 p-2 bg-[#ee761a] rounded-full absolute z-10 bottom-20 right-2 hover:opacity-90"
+                text={<PlusIcon />}
+                path="/living/form"
+            />
         </div>
     );
 }

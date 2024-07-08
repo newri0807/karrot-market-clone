@@ -7,6 +7,9 @@ import LikeButton from "@/components/like-button";
 import {UserCircleIcon} from "@heroicons/react/24/outline";
 import {createCachedLikeStatus, getCachedPost} from "./actions";
 import CommentList from "@/components/comment-list";
+import CustomButton from "@/components/ui/csbutton";
+import {revalidatePath} from "next/cache";
+import {handleDelete} from "../../form/[[...id]]/actions";
 
 export default async function PostDetail({params}: {params: {id: string}}) {
     const id = Number(params.id);
@@ -49,7 +52,14 @@ export default async function PostDetail({params}: {params: {id: string}}) {
                     <EyeIcon className="size-5" />
                     <span>조회 {post.views}</span>
                 </div>
-                <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
+                <div className="flex items-center justify-between w-full gap-2 text-neutral-400 text-sm">
+                    <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
+                    {userId === post.userId && (
+                        <div className="flex gap-2">
+                            <CustomButton path={`/living/form/${id}`} text="edit" className="bg-neutral-600 hover:bg-neutral-800" />
+                        </div>
+                    )}
+                </div>
             </div>
             <CommentList postId={id} />
         </div>

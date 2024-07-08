@@ -35,3 +35,8 @@ export const userSchema = z.object({
     phone: z.string().regex(phoneRegex, "올바른 핸드폰 번호를 입력해주세요."),
     avatar: z.string().optional(),
 });
+
+export const postSchema = z.object({
+    title: z.string().min(1, "Title is required"),
+    description: z.string().optional(),
+});

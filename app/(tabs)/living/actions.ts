@@ -1,5 +1,6 @@
 "use server";
 import db from "@/lib/db";
+import {unstable_cache as nextCache, revalidatePath} from "next/cache";
 
 export async function getPosts() {
     const posts = await db.post.findMany({
@@ -18,4 +19,14 @@ export async function getPosts() {
         },
     });
     return posts;
+}
+
+export const getCachedPosts = nextCache(getPosts, ["post-list"], {
+    revalidate: 30,
+    tags: ["post-detail"],
+});
+
+// 캐시 무효화 함수
+export async function revalidatePostList() {
+    revalidatePath("/living");
 }
