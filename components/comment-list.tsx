@@ -59,9 +59,11 @@ export default function CommentList({postId}: UserClientProps) {
         fetchSessionAndComments();
     }, [postId]);
 
+    const defaultText = editCommentId ? "Update" : "작성";
+
     const handleAddComment: SubmitHandler<CommentFormInput> = async ({payload}) => {
         if (!userId) return;
-        const defaultText = editCommentId ? "Update" : "작성";
+
         setButtonText("Saving...");
 
         if (editCommentId) {
@@ -73,7 +75,7 @@ export default function CommentList({postId}: UserClientProps) {
                     optimisticComments.map((comment) => (comment.id === editCommentId ? {...comment, payload: updatedComment.payload} : comment))
                 );
                 setEditCommentId(null);
-                handleSuccess(setButtonText, reset, defaultText, "Success👌");
+                handleSuccess(setButtonText, reset, defaultText, "Success👌", "comment");
             } catch (error) {
                 handleFailure(setButtonText, defaultText, error);
             }
@@ -96,7 +98,6 @@ export default function CommentList({postId}: UserClientProps) {
     const handleEditClick = (comment: Comment) => {
         setValue("payload", comment.payload);
         setEditCommentId(comment.id);
-        setButtonText("Success👌");
     };
 
     const handleDeleteClick = async (commentId: number) => {

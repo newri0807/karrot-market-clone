@@ -22,12 +22,14 @@ async function getUser() {
     notFound();
 }
 
-async function Username() {
+async function UserInfo() {
     const user = await getUser();
+    const avatarUrl = user.avatar ? `${user.avatar}?t=${Date.now()}` : null;
+
     return (
         <div className="flex justify-center items-center flex-col gap-3">
-            {user?.avatar ? (
-                <Image src={user?.avatar} alt={user?.username} width={140} height={140} className="rounded-full object-cover size-32" />
+            {avatarUrl ? (
+                <Image src={avatarUrl} alt={user?.username} width={140} height={140} className="rounded-full object-cover size-32" />
             ) : (
                 <UserCircleIcon className="size-32" />
             )}
@@ -51,7 +53,7 @@ export default async function MyPage() {
     return (
         <div className="p-5 flex flex-col justify-between min-h-screen">
             <div>
-                <Username />
+                <UserInfo />
                 <div className="my-4">
                     <CustomButton text="Edit Profile" path={`/myPage/edit?id=${session.id!}`} />
                 </div>

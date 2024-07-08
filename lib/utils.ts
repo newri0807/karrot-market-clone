@@ -20,7 +20,6 @@ export function formatToWon(price: number): string {
     return price.toLocaleString("ko-KR"); // 1000 -> 1,000
 }
 
-
 // form > submit button text -- 관리
 export const resetButtonText = (setButtonText: React.Dispatch<React.SetStateAction<string>>, defaultText: string) => {
     setTimeout(() => {
@@ -32,11 +31,12 @@ export const handleSuccess = (
     setButtonText: React.Dispatch<React.SetStateAction<string>>,
     reset: () => void,
     defaultText: string,
-    message: string
+    message: string,
+    type?: string
 ) => {
     setButtonText(message);
-    reset();
     resetButtonText(setButtonText, defaultText);
+    if (type) reset();
 };
 
 export const handleFailure = (setButtonText: React.Dispatch<React.SetStateAction<string>>, defaultText: string, error: any) => {

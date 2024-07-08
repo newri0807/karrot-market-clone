@@ -5,6 +5,7 @@ import sharp from "sharp";
 import {userSchema} from "@/lib/validators";
 import {storage} from "@/lib/firebase";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import getSession from '@/lib/session';
 
 export async function updateUser(data: any) {
     const {username, email, phone, avatar, existingPhoto, userId} = data;
@@ -44,22 +45,17 @@ export async function updateUser(data: any) {
             avatar: avatarUrl ? avatarUrl : undefined,
         });
 
-        if (result.success === false) {
-            // Convert error to a plain object
+        if (!result.success) {
             const errors = result.error.errors.map((err) => ({path: err.path, message: err.message}));
 
-            console.log(result, "result----");
             return {success: false, errors};
         } else {
-            // 업데이트 데이터 준비
             const updateData = {
                 username: result.data.username,
                 email: result.data.email,
                 phone: result.data.phone,
                 avatar: avatarUrl,
             };
-
-            console.log(updateData, "updateData----");
 
             await db.user.update({
                 where: {id: Number(userId)},
@@ -91,4 +87,19 @@ export async function getUserById(userId: string) {
         console.error(error);
         throw new Error("사용자 정보를 가져오는 중 오류가 발생했습니다.");
     }
+}
+
+export async function getUser() {
+    const session = await getSession();
+    if (session?.id) {
+        const user = await db.user.findUnique({
+            where: {
+                id: session.id,
+            },
+        });
+        if (user) {
+            return user;
+        }
+    }
+    return null;
 }
