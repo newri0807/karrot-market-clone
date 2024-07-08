@@ -93,7 +93,7 @@ const ProductList = () => {
 
     return (
         <>
-            {loading && !products.length
+            {loading && products.length === 0
                 ? renderSkeletons()
                 : products.map((product) => (
                       <Link key={product.id} href={`/products/view/${product.id}`} className="flex gap-5 my-3 hover:opacity-80">
