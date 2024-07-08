@@ -13,6 +13,7 @@ import {handleDelete} from "../../form/[[...id]]/actions";
 
 export default async function PostDetail({params}: {params: {id: string}}) {
     const id = Number(params.id);
+    
     if (isNaN(id)) {
         return notFound();
     }
@@ -61,7 +62,7 @@ export default async function PostDetail({params}: {params: {id: string}}) {
                     )}
                 </div>
             </div>
-            <CommentList postId={id} />
+            <CommentList postId={id} userId={userId} />
         </div>
     );
 }

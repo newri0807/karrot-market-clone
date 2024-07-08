@@ -34,9 +34,11 @@ const PostForm: React.FC<PostFormProps> = ({params}: {params: {id: string}}) => 
         async function fetchPost() {
             const postData = await getPostById(Number(params.id));
 
-            if (postData) {
+            if ("error" in postData) {
+                console.error(postData.error);
+            } else {
                 setValue("title", postData.title);
-                setValue("description", postData?.description || "");
+                setValue("description", postData.description || "");
             }
         }
 
@@ -52,16 +54,25 @@ const PostForm: React.FC<PostFormProps> = ({params}: {params: {id: string}}) => 
             } else {
                 result = await handleAdd(data);
             }
-            if (result?.redirectUrl) {
-                handleSuccess(setButtonText, reset, params.id ? "Edit Post" : "Add Post", "Success👌");
-                router.push(result?.redirectUrl);
-            }
+            handleSuccess(setButtonText, reset, params.id ? "Edit Post" : "Add Post", "Success👌");
+            // if (result?.redirectUrl) {
+            //     handleSuccess(setButtonText, reset, params.id ? "Edit Post" : "Add Post", "Success👌");
+            //     router.push(result?.redirectUrl);
+            // }
         } catch (error: any) {
             console.error("Failed to submit the form:", error.message);
             handleFailure(setButtonText, params.id ? "Edit Post" : "Add Post", error);
         }
     };
 
+    const deleteAction = async () => {
+        try {
+            await handleDelete(Number(params.id));
+            handleSuccess(setButtonText2, reset, "delete", "Success👌");
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <div className="space-y-4 p-5">
             <div className="my-2">
@@ -81,17 +92,7 @@ const PostForm: React.FC<PostFormProps> = ({params}: {params: {id: string}}) => 
                 </div>
                 <CustomButton text={buttonText} />
             </form>
-            {params.id && (
-                <CustomButton
-                    onClick={async () => {
-                        await handleDelete(Number(params.id));
-                        handleSuccess(setButtonText2, reset, "delete", "Success👌");
-                        router.push("/living");
-                    }}
-                    text={buttonText2}
-                    className="bg-red-700 mt-3 hover:bg-red-800"
-                />
-            )}
+            {params.id && <CustomButton onClick={deleteAction} text={buttonText2} className="bg-red-700 mt-3 hover:bg-red-800" />}
         </div>
     );
 };

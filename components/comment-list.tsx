@@ -25,13 +25,14 @@ interface Comment {
 
 interface UserClientProps {
     postId: number;
+    userId: number;
 }
 
 interface CommentFormInput {
     payload: string;
 }
 
-export default function CommentList({postId}: UserClientProps) {
+export default function CommentList({postId, userId}: UserClientProps) {
     const [comments, setComments] = useState<Comment[]>([]);
     const [optimisticComments, setOptimisticComments] = useOptimistic(comments);
     const {
@@ -41,7 +42,6 @@ export default function CommentList({postId}: UserClientProps) {
         setValue,
         formState: {errors},
     } = useForm<CommentFormInput>();
-    const [userId, setUserId] = useState<number | null>(null);
     const [username, setUsername] = useState<string>("");
     const [editCommentId, setEditCommentId] = useState<number | null>(null);
     const [buttonText, setButtonText] = useState<string>(editCommentId ? "Update" : "작성");
@@ -49,10 +49,6 @@ export default function CommentList({postId}: UserClientProps) {
 
     useEffect(() => {
         const fetchSessionAndComments = async () => {
-            const session = await getSession();
-            setUserId(session.id!);
-            // Assuming session contains username
-
             const fetchedComments = await getComments(postId);
             setComments(fetchedComments);
             setLoading(false);
@@ -90,7 +86,7 @@ export default function CommentList({postId}: UserClientProps) {
                 };
                 setOptimisticComments([...optimisticComments, formattedComment]);
                 setComments([...comments, formattedComment]);
-                handleSuccess(setButtonText, reset, defaultText, "Success👌");
+                handleSuccess(setButtonText, reset, defaultText, "Success👌", "comment");
             } catch (error) {
                 handleFailure(setButtonText, defaultText, error);
             }

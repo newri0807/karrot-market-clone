@@ -1,6 +1,7 @@
 "use server";
 
 import db from "@/lib/db";
+import {revalidatePost} from "../actions";
 
 export async function createComment(payload: string, userId: number, postId: number) {
     const comment = await db.comment.create({
@@ -13,7 +14,7 @@ export async function createComment(payload: string, userId: number, postId: num
             user: true,
         },
     });
-
+    await revalidatePost();
     return {
         id: comment.id,
         payload: comment.payload,
@@ -43,13 +44,13 @@ export async function getComments(postId: number) {
     }));
 }
 
-
 export async function updateComment(id: number, payload: string) {
     const updatedComment = await db.comment.update({
         where: {id},
         data: {payload},
         include: {user: true},
     });
+
     return {
         id: updatedComment.id,
         payload: updatedComment.payload,
@@ -64,7 +65,8 @@ export async function updateComment(id: number, payload: string) {
 }
 
 export async function deleteComment(id: number) {
+    await revalidatePost();
     await db.comment.delete({
-        where: { id },
+        where: {id},
     });
 }

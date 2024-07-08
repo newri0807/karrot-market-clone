@@ -18,15 +18,11 @@ export async function getPosts() {
             },
         },
     });
+
     return posts;
 }
 
-export const getCachedPosts = nextCache(getPosts, ["post-list"], {
-    revalidate: 30,
-    tags: ["post-detail"],
-});
 
-// 캐시 무효화 함수
-export async function revalidatePostList() {
-    revalidatePath("/living");
+export async function revalidatePost() {
+    await revalidatePath("/living");
 }

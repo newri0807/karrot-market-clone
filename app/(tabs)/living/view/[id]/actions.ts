@@ -2,16 +2,15 @@
 
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import {revalidateTag} from "next/cache";
+import {revalidatePath, revalidateTag} from "next/cache";
 import {unstable_cache as nextCache} from "next/cache";
+import {revalidatePost} from "../../actions";
 
 /**
  * 사용자에게 해당 게시물을 좋아요 표시하도록 하는 함수.
  * @param postId 게시물의 ID
  */
 export async function likePost(postId: number) {
-    // 10초 지연을 추가하여 비동기 처리 예제.
-    await new Promise((r) => setTimeout(r, 10000));
     const session = await getSession(); // 현재 사용자 세션 가져오기
     try {
         await db.like.create({
@@ -20,6 +19,7 @@ export async function likePost(postId: number) {
                 userId: session.id!, // 사용자 ID 설정
             },
         });
+        await revalidatePost();
         revalidateTag(`like-status-${postId}`); // 해당 태그를 가진 캐시 무효화
     } catch (e) {
         // 오류 무시
@@ -31,8 +31,6 @@ export async function likePost(postId: number) {
  * @param postId 게시물의 ID
  */
 export async function dislikePost(postId: number) {
-    // 10초 지연을 추가하여 비동기 처리 예제.
-    await new Promise((r) => setTimeout(r, 10000));
     try {
         const session = await getSession(); // 현재 사용자 세션 가져오기
         await db.like.delete({
@@ -43,6 +41,7 @@ export async function dislikePost(postId: number) {
                 },
             },
         });
+        await revalidatePost();
         revalidateTag(`like-status-${postId}`); // 해당 태그를 가진 캐시 무효화
     } catch (e) {
         // 오류 무시
@@ -80,6 +79,7 @@ export async function getPost(id: number) {
                 },
             },
         });
+
         return post; // 게시물 데이터 반환
     } catch (e) {
         return null; // 오류 시 null 반환

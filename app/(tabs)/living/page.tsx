@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import {formatToTimeAgo} from "@/lib/utils";
 import {ChatBubbleBottomCenterIcon, HandThumbUpIcon, PlusIcon} from "@heroicons/react/24/solid";
-import {getPosts, getCachedPosts} from "./actions";
+import {getPosts, revalidatePost} from "./actions";
 import CustomButton from "@/components/ui/csbutton";
 import {revalidatePath} from "next/cache";
 
@@ -10,8 +10,12 @@ export const metadata = {
     title: "동네생활",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function page() {
-    const posts = await getCachedPosts();
+    const posts = await getPosts();
+
+    //console.log(posts, "postData---------");
     return (
         <div className="px-5 flex flex-col *:text-left">
             {posts.length === 0 ? (
