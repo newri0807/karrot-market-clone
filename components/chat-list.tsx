@@ -8,7 +8,10 @@ import {UserCircleIcon} from "@heroicons/react/24/outline";
 
 interface ChatRoom {
     id: string;
-    users: {username: string; avatar: string | null}[];
+    otherUser: {
+        username: string;
+        avatar: string | null;
+    } | null;
     lastMessage: string;
     unreadCount: number;
     productId: number | null;
@@ -33,7 +36,7 @@ export default function ChatList() {
     return (
         <div>
             {chatRooms.length === 0 ? (
-                <div className="flex flex-col justify-center item-center min-h-[85vh]">
+                <div className="flex flex-col justify-center items-center min-h-[85vh]">
                     <p className="text-neutral-400 text-center">현재 사용중인 채팅이 없습니다.</p>
                 </div>
             ) : (
@@ -43,19 +46,19 @@ export default function ChatList() {
                         className="flex items-center gap-4 p-4 border-b border-neutral-600 hover:bg-neutral-800 transition-colors justify-around"
                     >
                         <Link href={`/chat/view/${room.id}/${room.productId}`} className="flex items-center gap-4 w-full">
-                            {room?.users[0]?.avatar ? (
+                            {room.otherUser?.avatar ? (
                                 <Image
-                                    src={room?.users[0]?.avatar || "./default-avatar.png"}
-                                    alt={room.users[0].username}
+                                    src={room.otherUser.avatar || "./default-avatar.png"}
+                                    alt={room.otherUser.username}
                                     width={50}
                                     height={50}
-                                    className="rounded-full object-cover border border-neutral-600"
+                                    className="rounded-full size-14 object-cover border border-neutral-600"
                                 />
                             ) : (
-                                <UserCircleIcon className="size-8" />
+                                <UserCircleIcon className="size-14" />
                             )}
                             <div className="flex-3">
-                                <div className="font-bold text-lg">{room.users[0].username}</div>
+                                <div className="font-bold text-md text-left">@{room.otherUser?.username}</div>
                                 <div className="text-sm text-gray-600">{room.lastMessage}</div>
                             </div>
                             {room.unreadCount > 0 && (

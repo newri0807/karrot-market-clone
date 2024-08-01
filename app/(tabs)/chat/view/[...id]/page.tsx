@@ -8,7 +8,7 @@ import {fetchMessages, getUserFromSession, saveMessage, fetchProduct, purchasePr
 import {UserCircleIcon} from "@heroicons/react/24/outline";
 import CustomButton from "@/components/ui/csbutton";
 import {useRouter} from "next/navigation";
-import ModalLoading from '@/app/(tabs)/home/@modal/loading';
+import ModalLoading from "@/app/(tabs)/home/@modal/loading";
 
 const SUPABASE_PUBLIC_KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLIC_KEY!;
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -49,6 +49,16 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
     const [product, setProduct] = useState<Product | null>(null);
     const [optimisticProduct, setOptimisticProduct] = useState<Product | null>(null);
     const router = useRouter();
+    const messagesEndRef = useRef<null | HTMLDivElement>(null);
+    const [isSending, setIsSending] = useState(false);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -71,8 +81,8 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
                 channel.current
                     .on("broadcast", {event: "message"}, (payload) => {
                         setMessages((prevMsgs) => {
-                            // Check for duplicates before adding
-                            if (prevMsgs.find((msg) => msg.id === payload.payload.id)) {
+                            // 중복 검사
+                            if (prevMsgs.some((msg) => msg.id === payload.payload.id)) {
                                 return prevMsgs;
                             }
                             return [...prevMsgs, payload.payload];
@@ -132,31 +142,41 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
     const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (!user) {
-            console.error("사용자가 로그인되어 있지 않습니다.");
+        if (!user || isSending) {
             return;
         }
 
-        const newMessage = await saveMessage(chatRoomId, message, user.id);
+        setIsSending(true);
 
-        const chatMessage: ChatMessage = {
-            id: newMessage.id,
-            payload: newMessage.payload,
-            created_at: new Date(newMessage.created_at).toISOString(), // Convert Date to string
-            userId: user.id,
-            user: {
-                username: user.username,
-                avatar: user.avatar,
-            },
-            read: newMessage.read,
-        };
+        try {
+            const newMessage = await saveMessage(chatRoomId, message, user.id);
 
-        channel.current?.send({
-            type: "broadcast",
-            event: "message",
-            payload: chatMessage,
-        });
-        setMessage("");
+            const chatMessage: ChatMessage = {
+                id: newMessage.id,
+                payload: newMessage.payload,
+                created_at: new Date(newMessage.created_at).toISOString(),
+                userId: user.id,
+                user: {
+                    username: user.username,
+                    avatar: user.avatar,
+                },
+                read: newMessage.read,
+            };
+
+            // 옵티미스틱 업데이트
+            setMessages((prevMessages) => [...prevMessages, chatMessage]);
+
+            channel.current?.send({
+                type: "broadcast",
+                event: "message",
+                payload: chatMessage,
+            });
+            setMessage("");
+        } catch (error) {
+            console.error("메시지 전송 중 오류가 발생했습니다.", error);
+        } finally {
+            setIsSending(false);
+        }
     };
 
     const handlePurchase = async () => {
@@ -178,18 +198,20 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
         }
     };
 
-    if (!chatRoomId || !user) return <ModalLoading/>;
+    if (!chatRoomId || !user) return <ModalLoading />;
+
+    console.log("product", product, "user", user);
 
     return (
         <div className="p-5 flex flex-col gap-5 min-h-screen justify-end">
-            {product && user.id !== product.id && (
+            {product && (
                 <div
                     className={`flex items-center gap-4 p-5 bg-gray-100 rounded-md absolute top-3 left-0 w-full ${
                         optimisticProduct && optimisticProduct.sold ? "opacity-50" : ""
                     }`}
                 >
-                    <Image src={product.photo} alt={product.title} width={150} height={150} className="rounded-md" />
-                    <div className="flex flex-col">
+                    <Image src={product.photo} alt={product.title} width={150} height={150} className="rounded-md size-36 object-cover" />
+                    <div className="flex flex-col min-w-[50%]">
                         <h2 className="text-xl font-bold text-black">{product.title}</h2>
                         <span className="text-lg text-green-600">{formatToWon(product.price)}원</span>
                         {optimisticProduct && !optimisticProduct.sold ? ( // 현재 사용자가 제품 소유자가 아닌 경우에만 버튼 표시
@@ -223,6 +245,7 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
                     </div>
                 </div>
             ))}
+            <div ref={messagesEndRef} />
             <form className="flex relative" onSubmit={onSubmit}>
                 <input
                     required
@@ -233,8 +256,12 @@ export default function ChatRoomPage({params}: ChatRoomIdProps) {
                     name="message"
                     placeholder="Write a message..."
                 />
-                <button className="absolute right-0">
-                    <ArrowUpCircleIcon className="size-10 text-orange-500 transition-colors hover:text-orange-300" />
+                <button className="absolute right-0" disabled={isSending}>
+                    <ArrowUpCircleIcon
+                        className={`size-10 transition-colors ${
+                            isSending ? "text-gray-400 cursor-not-allowed" : "text-orange-500 hover:text-orange-300"
+                        }`}
+                    />
                 </button>
             </form>
         </div>

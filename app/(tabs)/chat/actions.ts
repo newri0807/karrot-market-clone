@@ -14,31 +14,28 @@ import getSession from "@/lib/session";
  *  - unreadCount: 읽지 않은 메시지 수
  */
 export async function fetchChatRooms() {
-    // 현재 세션을 가져옵니다.
     const session = await getSession();
     const userId = session?.id;
 
-    // 사용자가 로그인되지 않은 경우 에러를 발생시킵니다.
     if (!userId) {
         throw new Error("로그인된 사용자가 없습니다.");
     }
 
-    // 현재 사용자가 참여하고 있는 모든 채팅방을 가져옵니다.
     const chatRooms = await db.chatRoom.findMany({
         where: {
             users: {
                 some: {
-                    id: userId, // 현재 사용자가 포함된 채팅방을 찾습니다.
+                    id: userId,
                 },
             },
         },
         include: {
-            users: true, // 각 채팅방에 포함된 사용자 정보를 포함시킵니다.
+            users: true,
             messages: {
                 orderBy: {
-                    created_at: "desc", // 메시지를 생성 날짜 기준으로 내림차순 정렬합니다.
+                    created_at: "desc",
                 },
-                take: 1, // 각 채팅방의 마지막 메시지 하나만 가져옵니다.
+                take: 1,
             },
             Product: {
                 select: {
@@ -48,15 +45,19 @@ export async function fetchChatRooms() {
         },
     });
 
-    // 각 채팅방 객체를 변환하여 반환합니다.
-    return chatRooms.map((room) => ({
-        id: room.id, // 채팅방 ID
-        users: room.users.map((user) => ({
-            username: user.username, // 사용자의 이름
-            avatar: user.avatar, // 사용자의 아바타
-        })),
-        lastMessage: room.messages[0]?.payload || "", // 마지막 메시지 내용 (없으면 빈 문자열)
-        unreadCount: room.messages.filter((message) => !message.read && message.userId !== userId).length, // 읽지 않은 메시지 수 (현재 사용자가 보낸 메시지는 제외)
-        productId: room.Product ? room.Product.id : null,
-    }));
+    return chatRooms.map((room) => {
+        const otherUser = room.users.find((user) => user.id !== userId);
+        return {
+            id: room.id,
+            otherUser: otherUser
+                ? {
+                      username: otherUser.username,
+                      avatar: otherUser.avatar,
+                  }
+                : null,
+            lastMessage: room.messages[0]?.payload || "",
+            unreadCount: room.messages.filter((message) => !message.read && message.userId !== userId).length,
+            productId: room.Product ? room.Product.id : null,
+        };
+    });
 }
