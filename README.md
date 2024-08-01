@@ -3,7 +3,10 @@
 ## 📖 프로젝트 소개
 
 이 프로젝트는 인기 있는 중고 거래 플랫폼인 당근마켓을 클론한 웹 애플리케이션입니다. Next.js와 React를 기반으로 구축되었으며, 사용자 친화적인 인터페이스와 실시간 채팅 기능을 제공합니다.
-(https://github.com/user-attachments/assets/1cd10e1f-026f-4612-b3f9-2d3472e6b69a)
+
+## 🖼 스크린샷
+
+![당근마켓 클론 스크린샷](https://github.com/user-attachments/assets/1cd10e1f-026f-4612-b3f9-2d3472e6b69a)
 
 ## 🚀 주요 기능
 
@@ -43,6 +46,51 @@
 - **Heroicons**: SVG 아이콘 세트
 - **Supabase**: 백엔드 서비스 제공 플랫폼
 - **Sharp**: 고성능 이미지 처리 라이브러리
+
+## 📁 프로젝트 구조
+
+```
+03. karrot-market-clone
+├─ .eslintrc.json
+├─ app
+│  ├─ (main)
+│  ├─ (tabs)
+│  │  ├─ chat
+│  │  ├─ home
+│  │  ├─ living
+│  │  ├─ myPage
+│  │  ├─ products
+│  │  └─ shop
+│  ├─ globals.css
+│  ├─ join
+│  ├─ layout.tsx
+│  ├─ login
+│  ├─ not-found.tsx
+│  └─ review
+├─ components
+│  ├─ chat-list.tsx
+│  ├─ chatOpen-Button.tsx
+│  ├─ close-button.tsx
+│  ├─ comment-list.tsx
+│  ├─ like-button.tsx
+│  ├─ myPage
+│  ├─ product-list.tsx
+│  └─ ui
+├─ components.json
+├─ lib
+├─ middleware.ts
+├─ next.config.mjs
+├─ package.json
+├─ postcss.config.mjs
+├─ prisma
+│  ├─ migrations
+│  └─ schema.prisma
+├─ public
+├─ README.md
+├─ store
+├─ tailwind.config.ts
+└─ tsconfig.json
+```
 
 ## 🚀 시작하기
 
@@ -94,147 +142,3 @@ SUPABASE_ANON_KEY=your_supabase_anon_key
 ---
 
 🥕 당근마켓 클론 프로젝트를 즐겨보세요!
-
-
-
-
-
-## 🎢 파일 구조 
-03. karrot-market-clone
-├─ .eslintrc.json
-├─ app
-│  ├─ (main)
-│  │  ├─ favicon.ico
-│  │  └─ page.tsx
-│  ├─ (tabs)
-│  │  ├─ chat
-│  │  │  ├─ actions.ts
-│  │  │  ├─ page.tsx
-│  │  │  └─ view
-│  │  │     └─ [...id]
-│  │  │        ├─ actions.ts
-│  │  │        └─ page.tsx
-│  │  ├─ home
-│  │  │  ├─ @modal
-│  │  │  │  ├─ (...)products
-│  │  │  │  │  └─ view
-│  │  │  │  │     └─ [id]
-│  │  │  │  │        └─ page.tsx
-│  │  │  │  ├─ default.tsx
-│  │  │  │  └─ loading.tsx
-│  │  │  ├─ actions.ts
-│  │  │  ├─ layout.tsx
-│  │  │  ├─ loading.tsx
-│  │  │  └─ page.tsx
-│  │  ├─ layout.tsx
-│  │  ├─ living
-│  │  │  ├─ actions.ts
-│  │  │  ├─ comment
-│  │  │  │  └─ actions.ts
-│  │  │  ├─ loading.tsx
-│  │  │  ├─ page.tsx
-│  │  │  └─ view
-│  │  │     └─ [id]
-│  │  │        ├─ actions.ts
-│  │  │        └─ page.tsx
-│  │  ├─ myPage
-│  │  │  ├─ actions.ts
-│  │  │  ├─ edit
-│  │  │  │  ├─ action.ts
-│  │  │  │  └─ page.tsx
-│  │  │  └─ page.tsx
-│  │  ├─ products
-│  │  │  ├─ add
-│  │  │  │  ├─ actions.ts
-│  │  │  │  └─ page.tsx
-│  │  │  ├─ edit
-│  │  │  │  └─ [id]
-│  │  │  │     ├─ actions.ts
-│  │  │  │     └─ page.tsx
-│  │  │  └─ view
-│  │  │     └─ [id]
-│  │  │        ├─ actions.ts
-│  │  │        ├─ loading.tsx
-│  │  │        └─ page.tsx
-│  │  └─ shop
-│  │     └─ page.tsx
-│  ├─ globals.css
-│  ├─ join
-│  │  ├─ actions.ts
-│  │  ├─ layout.tsx
-│  │  └─ page.tsx
-│  ├─ layout.tsx
-│  ├─ login
-│  │  ├─ actions.ts
-│  │  ├─ layout.tsx
-│  │  └─ page.tsx
-│  ├─ not-found.tsx
-│  └─ review
-│     └─ [...id]
-│        ├─ actions.ts
-│        └─ page.tsx
-├─ components
-│  ├─ chat-list.tsx
-│  ├─ chatOpen-Button.tsx
-│  ├─ close-button.tsx
-│  ├─ comment-list.tsx
-│  ├─ like-button.tsx
-│  ├─ myPage
-│  │  └─ productList.tsx
-│  ├─ product-list.tsx
-│  └─ ui
-│     ├─ Button.tsx
-│     ├─ csbutton.tsx
-│     ├─ csinput.tsx
-│     ├─ Input.tsx
-│     ├─ Rating.tsx
-│     └─ tabMenu.tsx
-├─ components.json
-├─ lib
-│  ├─ check.ts
-│  ├─ constants.ts
-│  ├─ db.ts
-│  ├─ hash.ts
-│  ├─ session.ts
-│  ├─ type.ts
-│  ├─ utils.ts
-│  └─ validators.ts
-├─ middleware.ts
-├─ next.config.mjs
-├─ package-lock.json
-├─ package.json
-├─ postcss.config.mjs
-├─ prisma
-│  ├─ migrations
-│  │  ├─ 20240623054355_add_model_product
-│  │  │  └─ migration.sql
-│  │  ├─ 20240623084638_add_model_product
-│  │  │  └─ migration.sql
-│  │  ├─ 20240626045838_add_model_post_comment_like
-│  │  │  └─ migration.sql
-│  │  ├─ 20240627234242_add_realtime_chat
-│  │  │  └─ migration.sql
-│  │  ├─ 20240628012024_add_read_in_model_message
-│  │  │  └─ migration.sql
-│  │  ├─ 20240701021413_add_review
-│  │  │  └─ migration.sql
-│  │  ├─ 20240701023941_eidt_extras
-│  │  │  └─ migration.sql
-│  │  ├─ 20240702015911_
-│  │  │  └─ migration.sql
-│  │  ├─ 20240702020152_reset
-│  │  │  └─ migration.sql
-│  │  ├─ 20240702020245_add_product_id_in_chat_room
-│  │  │  └─ migration.sql
-│  │  └─ migration_lock.toml
-│  └─ schema.prisma
-├─ public
-│  ├─ next.svg
-│  └─ vercel.svg
-├─ README.md
-├─ store
-│  └─ userStore.ts
-├─ tailwind.config.ts
-└─ tsconfig.json
-
-```
