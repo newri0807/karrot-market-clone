@@ -67,7 +67,7 @@ const ProductList: React.FC<ProductListProps> = ({products: initialProducts, typ
         const hasReviews = reviews.length > 0;
         const hasOtherUserReview = hasReviews && reviews.some((review) => review.userId !== userId);
 
-        if (!hasReviews && (!product.sold || (product.reviews && product.reviews.every((review) => review.userId === userId)))) {
+        if (!hasReviews && (!product.sold || (reviews.length > 0 && reviews.every((review) => review.userId === userId)))) {
             return null;
         }
 
@@ -76,10 +76,9 @@ const ProductList: React.FC<ProductListProps> = ({products: initialProducts, typ
                 {hasReviews && hasOtherUserReview && (
                     <CustomButton text="상대방 리뷰" onClick={(event) => handleReviewClick(event, product.id, product.buyerId!)} className="mb-2" />
                 )}
-
                 {product.sold && (
                     <>
-                        {!product.reviews || product.reviews.length === 0 || product.reviews.every((review: any) => review.userId !== userId) ? (
+                        {!hasReviews || reviews.every((review) => review.userId !== userId) ? (
                             <CustomButton text="리뷰 남기기" onClick={(event) => handleReviewClick(event, product.id)} />
                         ) : (
                             <CustomButton
@@ -94,6 +93,7 @@ const ProductList: React.FC<ProductListProps> = ({products: initialProducts, typ
         );
     };
 
+    console.log(products);
     return (
         <>
             <ul>

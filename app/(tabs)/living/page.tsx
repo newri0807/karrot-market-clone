@@ -15,7 +15,6 @@ export const dynamic = "force-dynamic";
 export default async function page() {
     const posts = await getPosts();
 
-    //console.log(posts, "postData---------");
     return (
         <div className="px-5 flex flex-col *:text-left">
             {posts.length === 0 ? (

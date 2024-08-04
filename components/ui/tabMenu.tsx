@@ -3,7 +3,6 @@
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import React from "react";
-
 import {
     HomeIcon as SolidHomeIcon,
     NewspaperIcon as SolidNewspaperIcon,
@@ -18,14 +17,18 @@ import {
     VideoCameraIcon as OutlineVideoCameraIcon,
     UserIcon as OutlineUserIcon,
 } from "@heroicons/react/24/outline";
-const TabMenu = () => {
-    const currentPage = usePathname();
-    const isProductsViewPath = currentPage.includes("/products/view/");
-    const isChatViewPath = currentPage.includes("/chat/view/");
 
-    if (isProductsViewPath || isChatViewPath) {
+const TabMenu = ({isModalOpen}: {isModalOpen: boolean}) => {
+    const currentPage = usePathname();
+
+    // modal 페이지에서도 TabMenu를 표시하도록 조건 수정
+    const pathname = usePathname();
+    const shouldHideTabMenu = (pathname.includes("/products/view/") || pathname.includes("/chat/view/")) && !isModalOpen;
+
+    if (shouldHideTabMenu) {
         return null;
     }
+
     return (
         <div className="w-[360px] fixed bottom-0 z-30 bg-[#232323] ">
             <ul className="grid grid-cols-5 items-center h-10 my-3 mx-1 *:text-white">

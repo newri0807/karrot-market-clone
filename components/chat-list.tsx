@@ -19,24 +19,36 @@ interface ChatRoom {
 
 export default function ChatList() {
     const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const loadChatRooms = async () => {
+            setIsLoading(true);
             try {
                 const rooms = await fetchChatRooms();
                 setChatRooms(rooms);
             } catch (error) {
                 console.error("채팅 목록을 가져오는 중 오류 발생:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         loadChatRooms();
     }, []);
 
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center min-h-[85vh] text-neutral-400">
+                <p>채팅 목록을 불러오는 중...</p>
+            </div>
+        );
+    }
+
     return (
         <div>
             {chatRooms.length === 0 ? (
-                <div className="flex flex-col justify-center items-center min-h-[85vh]">
+                <div className="flex flex-col justify-center items-center min-h-[85vh] text-neutral-400">
                     <p className="text-neutral-400 text-center">현재 사용중인 채팅이 없습니다.</p>
                 </div>
             ) : (

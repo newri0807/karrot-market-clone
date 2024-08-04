@@ -22,7 +22,6 @@ export async function getPosts() {
     return posts;
 }
 
-
 export async function revalidatePost() {
     await revalidatePath("/living");
 }

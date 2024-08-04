@@ -8,15 +8,12 @@ export const metadata: Metadata = {
     },
 };
 
-export default function TabLayout({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
+export default function TabLayout({children, modal}: {children: React.ReactNode; modal: React.ReactNode}) {
+    const isModalOpen = !!modal;
     return (
         <div>
             {children}
-            <TabMenu />
+            <TabMenu isModalOpen={isModalOpen} />
         </div>
     );
 }

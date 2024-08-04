@@ -14,6 +14,7 @@ export async function getProducts(take: number, skip: number) {
                 description: true,
                 updated_at: true,
                 userId: true,
+                sold: true,
             },
             take,
             skip,
